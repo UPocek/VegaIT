@@ -1,3 +1,27 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended",
+    "next/core-web-vitals"
+  ],
+  "plugins": [
+    "react",
+    "jsx-a11y"
+  ],
+  "rules": {
+    "react/no-multi-comp": "warn",
+    "react/jsx-pascal-case": "warn",
+    "react/jsx-closing-bracket-location": "warn",
+    "react/jsx-closing-tag-location": "warn",
+    "react/jsx-tag-spacing": "warn",
+    "react/jsx-curly-spacing": "warn",
+    "react/jsx-wrap-multilines": "warn",
+    "react/self-closing-comp": "warn",
+    "jsx-quotes": [
+      "warn",
+      "prefer-double"
+    ],
+    "no-multi-spaces": "warn"
+  }
 }
