@@ -21,15 +21,8 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<List<Category>> GetAllCategories()
     {
-        //var categories = await _context.Categories.FindAsync();
-        //return categories;
-
-        var temp = new List<Category>
-        {
-            new Category(7, "Uros")
-        };
-
-        return temp;
+        var categories = await _context.Categories.ToListAsync();
+        return categories;
     }
 }
 
