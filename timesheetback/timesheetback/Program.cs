@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using timesheetback.Models;
+using timesheetback.Repositories;
 using timesheetback.Services;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
@@ -15,7 +16,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<TimeSheetContext>(x => x.UseMySql(connectionString, new MariaDbServerVersion(new Version(10, 3, 29))));
 
 
-builder.Services.AddSingleton<UserService>();
+builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

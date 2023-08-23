@@ -1,22 +1,21 @@
 ﻿using System;
 namespace timesheetback.Models
 {
-	public class Category
+	public class Country
 	{
 
 		public long Id { get; set; }
-        public string? Name { get; set; }
+		public string Name { get; set; }
 
-        public Category()
+		public Country()
 		{
 		}
 
-        public Category(long id, string? name)
+        public Country(long id, string name)
         {
             Id = id;
             Name = name;
         }
-
     }
 }
 
