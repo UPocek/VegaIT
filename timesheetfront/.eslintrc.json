@@ -18,6 +18,12 @@
     "react/jsx-curly-spacing": "warn",
     "react/jsx-wrap-multilines": "warn",
     "react/self-closing-comp": "warn",
+    "no-unused-vars": [
+      "warn",
+      {
+        "varsIgnorePattern": "_.*"
+      }
+    ],
     "jsx-quotes": [
       "warn",
       "prefer-double"
