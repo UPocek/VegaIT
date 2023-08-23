@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using timesheetback.Models;
 using timesheetback.Services;
 
@@ -10,8 +11,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-var connectionString = builder.Configuration.GetConnectionString("AppDb");
-builder.Services.AddDbContext<TimeSheetContext>(x => x.UseSqlServer(connectionString));
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<TimeSheetContext>(x => x.UseMySql(connectionString, new MariaDbServerVersion(new Version(10, 3, 29))));
+
 
 builder.Services.AddSingleton<UserService>();
 
