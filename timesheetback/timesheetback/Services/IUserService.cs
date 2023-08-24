@@ -1,14 +1,14 @@
 ﻿using System;
 using timesheetback.DTOs;
+using timesheetback.Models;
 
 namespace timesheetback.Services
 {
 	public interface IUserService
 	{
+        Employee? ProccessUserLogin(LoginCredentialsDTO loginCredentials);
 
-        UserCredentialsDTO ProccessUserLogin(LoginCredentialsDTO loginCredentials);
-
-        Task<UserCredentialsDTO> ProccessUserLoginAsync(LoginCredentialsDTO loginCredentials);
+        Task<Employee?> ProccessUserLoginAsync(LoginCredentialsDTO loginCredentials);
 
         Task ProccessUserRegistrationAsync(RegistrationCredentialsDTO registrationCredentials);
 

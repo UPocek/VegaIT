@@ -1,6 +1,7 @@
 import { baseUrl } from "@/pages/_app";
 import axios from "axios";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function LoginForm() {
@@ -9,14 +10,23 @@ export default function LoginForm() {
     const [password, setPassword] = useState('');
     const [credentialsNotValid, setCredentialsNotValid] = useState(false);
 
+    const router = useRouter();
+
     function login(e) {
         e.preventDefault();
         if (!credentialsValid()) {
             setCredentialsNotValid(true);
             return;
         }
-        axios.post(`${baseUrl}/api/user/login`, { 'email': email, 'password': password })
-            .then(response => console.log(response))
+        axios.post(`${baseUrl}/api/user/login`, { 'email': email, 'password': password }, {
+            headers: {
+                'skip': 'true'
+            }
+        })
+            .then(response => {
+                localStorage.setItem('accessToken', response.data['token']);
+                router.replace('/');
+            })
             .catch(_ => setCredentialsNotValid(true));
     }
 
