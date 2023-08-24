@@ -958,9 +958,9 @@ input[type=number] {
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: visibility 0s, opacity 0.8s;
-  visibility: hidden;
-  opacity: 0;
+  visibility: visible;
+  opacity: 1;
+  z-index: 10;
 }
 
 .modal__content {
@@ -1007,6 +1007,13 @@ input[type=number] {
   position: absolute;
   top: 10px;
   right: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-modal {
+  border: none;
+  cursor: pointer;
 }
 
 .modal__icon {
@@ -1026,12 +1033,6 @@ input[type=number] {
   transform: rotate(90deg);
 }
 
-.modal--show {
-  visibility: visible;
-  opacity: 1;
-  z-index: 10;
-}
-
 .accordion {
   width: 100%;
   overflow: hidden;
@@ -1046,11 +1047,18 @@ input[type=number] {
 }
 
 .accordion__content {
-  display: none;
   padding: 0 20px 20px;
   opacity: 1;
   background: #fff;
   border: 1px solid #f1f1f1;
+}
+
+.show_accordion {
+  display: block;
+}
+
+.hide_accordion {
+  display: none;
 }
 
 .accordion__title {
@@ -1067,6 +1075,7 @@ input[type=number] {
 
 .info__wrapper {
   display: flex;
+  justify-content: space-around;
   flex-direction: row;
   padding-right: 0;
   padding-left: 0;
@@ -1146,6 +1155,7 @@ input[type=number] {
   text-transform: uppercase;
   font-weight: 700;
   background-color: #e9e9ea;
+  cursor: pointer;
 }
 
 .alphabet__button--active {
