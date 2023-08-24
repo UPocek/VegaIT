@@ -1,22 +1,21 @@
 ﻿using System;
 namespace timesheetback.Models
 {
-	public class Category
+	public class Role
 	{
 
 		public long Id { get; set; }
-        public string? Name { get; set; }
+		public string Name { get; set; }
 
-        public Category()
+		public Role()
 		{
 		}
 
-        public Category(long id, string? name)
+        public Role(long id, string name)
         {
             Id = id;
             Name = name;
         }
-
     }
 }
 
