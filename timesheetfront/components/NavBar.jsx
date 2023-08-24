@@ -8,7 +8,7 @@ export default function NavBar() {
     const [username, setUsername] = useState('');
 
     useEffect(() => {
-        // setUsername(getUserUsername());
+        setUsername(getUserUsername());
     }, [])
 
     return (

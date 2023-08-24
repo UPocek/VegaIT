@@ -36,12 +36,12 @@ namespace timesheetback.Repositories
 
         public Employee? GetUserByEmail(string email)
         {
-            return _context.Employees.FirstOrDefault(employee => employee.Email == email);
+            return _context.Employees.Include(e => e.Role).FirstOrDefault(employee => employee.Email == email);
         }
 
         public Task<Employee?> GetUserByEmailAsync(string email)
         {
-            return _context.Employees.FirstOrDefaultAsync(employee => employee.Email == email);
+            return _context.Employees.Include(e => e.Role).FirstOrDefaultAsync(employee => employee.Email == email);
         }
 
         public void SaveUser(Employee user)

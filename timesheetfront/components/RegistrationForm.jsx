@@ -21,7 +21,7 @@ export default function RegistrationForm() {
 
         axios.post(`${baseUrl}/api/user/registration`, { 'name': name, 'username': username, 'role': role, 'email': email, 'password': password })
             .then(response => { setBadRequest(false); setCredentialsNotValid(false); alert(`New employee added sucessfully ${response.data} !`) })
-            .catch(error => { setCredentialsNotValid(false); setBadRequest(true) });
+            .catch(_ => { setCredentialsNotValid(false); setBadRequest(true) });
     }
 
     function credentialsValid() {

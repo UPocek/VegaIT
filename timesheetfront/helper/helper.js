@@ -1,23 +1,22 @@
 import Router from "next/router";
 
-export function getUserRole() {
-    return localStorage.getItem('userRole');
-}
 export function getUserAccessToken() {
     return localStorage.getItem('accessToken');
 }
 export function getUserRefreshToken() {
     return localStorage.getItem('refreshToken');
 }
+export function getUserRole() {
+    return parseJwt(getUserAccessToken())['role'];
+}
 export function getUserEmail() {
-    return parseJwt(getUserIdToken())['email'];
+    return parseJwt(getUserAccessToken())['email'];
 }
 export function getUserUsername() {
-    return parseJwt(getUserIdToken())['username'] || 'anonymous';
+    return parseJwt(getUserAccessToken())['unique_name'] || 'anonymous';
 }
-
-export function getUserIdToken() {
-    return localStorage.getItem('idToken');
+export function getUserName() {
+    return parseJwt(getUserAccessToken())['given_name'] || 'anonymous';
 }
 
 function parseJwt(token) {

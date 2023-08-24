@@ -21,25 +21,17 @@ namespace timesheetback.Services
 			_userRepository = userRepository;
 		}
 
-		public UserCredentialsDTO ProccessUserLogin(LoginCredentialsDTO loginCredentials)
+		public Employee? ProccessUserLogin(LoginCredentialsDTO loginCredentials)
         {
             Employee userToLogin = _userRepository.GetUserByEmail(loginCredentials.Email) ?? throw new Exception("User with that email does not exists");
-            if (!VerifyPassword(loginCredentials.Password, userToLogin.Password))
-            {
-                throw new Exception("Email or Password not valid");
-            }
-
-            return new UserCredentialsDTO() { Username = userToLogin.Username };
+            return (VerifyPassword(loginCredentials.Password, userToLogin.Password) && VerifyUserActive(userToLogin)) ? userToLogin : null;
+                
         }
 
-		public async Task<UserCredentialsDTO> ProccessUserLoginAsync(LoginCredentialsDTO loginCredentials)
+		public async Task<Employee?> ProccessUserLoginAsync(LoginCredentialsDTO loginCredentials)
         {
             Employee userToLogin = await _userRepository.GetUserByEmailAsync(loginCredentials.Email) ?? throw new Exception("User with that email does not exists");
-            if (!VerifyPassword(loginCredentials.Password, userToLogin.Password)) {
-                throw new Exception("Email or Password not valid");
-            }
-
-            return new UserCredentialsDTO() { Username = userToLogin.Username };
+            return (VerifyPassword(loginCredentials.Password, userToLogin.Password) && VerifyUserActive(userToLogin)) ? userToLogin : null;
         }
 
         public void ProccessUserRegistration(RegistrationCredentialsDTO registrationCredentials)
@@ -96,6 +88,10 @@ namespace timesheetback.Services
         {
             var hashToCompare = Rfc2898DeriveBytes.Pbkdf2(password, Encoding.ASCII.GetBytes(_salt), _iterations, _hashAlgorithm, _keySize);
             return CryptographicOperations.FixedTimeEquals(hashToCompare, Convert.FromHexString(hash));
+        }
+
+        private bool VerifyUserActive(Employee employee) {
+            return employee.IsActive;
         }
     }
 }
