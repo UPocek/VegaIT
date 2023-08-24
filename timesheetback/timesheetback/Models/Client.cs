@@ -1,10 +1,17 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using timesheetback.DTOs;
+using System.Diagnostics.Metrics;
+using System.Net;
+
 namespace timesheetback.Models
 {
 	public class Client
 	{
 		public long Id { get; set; }
-		public string Name { get; set; }
+        public string Name { get; set; }
 		public string Address { get; set; }
 		public long CountryId { get; set; }
 		public Country Country { get; set; } = null!;
@@ -25,6 +32,13 @@ namespace timesheetback.Models
             Country = country;
             CityId = cityId;
             City = city;
+        }
+
+        public Client(CreateClientCredentialsDTO clientCredentials) {
+            Name = clientCredentials.Name;
+            Address = clientCredentials.Address;
+            CountryId = clientCredentials.CountryId;
+            CityId = clientCredentials.CityId;
         }
     }
 }
