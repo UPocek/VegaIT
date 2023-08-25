@@ -1,18 +1,20 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getUserUsername, logOut } from "@/helper/helper";
+import { getUserRole, getUserUsername, logOut } from "@/helper/helper";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 export default function NavBar() {
 
     const [username, setUsername] = useState('');
+    const [role, setRole] = useState('');
     const [urlPath, setUrlPath] = useState('');
     const router = useRouter();
 
     useEffect(() => {
         setUsername(getUserUsername());
         setUrlPath(router.pathname);
+        setRole(getUserRole());
     }, [router.pathname])
 
     return (
@@ -36,9 +38,10 @@ export default function NavBar() {
                         <li className="navigation__list">
                             <Link href="/categories" className={`btn navigation__button ${urlPath.startsWith('/categories') ? 'navigation__button--active' : ''}`}>Categories</Link>
                         </li>
-                        <li className="navigation__list">
-                            <Link href="/employees" className={`btn navigation__button ${urlPath.startsWith('/employees') ? 'navigation__button--active' : ''}`}>Employees</Link>
-                        </li>
+                        {role == 'worker' &&
+                            <li className="navigation__list">
+                                <Link href="/employees" className={`btn navigation__button ${urlPath.startsWith('/employees') ? 'navigation__button--active' : ''}`}>Employees</Link>
+                            </li>}
                         <li className="navigation__list">
                             <Link href="/reports" className={`btn navigation__button ${urlPath.startsWith('/reports') ? 'navigation__button--active' : ''}`}>Reports</Link>
                         </li>

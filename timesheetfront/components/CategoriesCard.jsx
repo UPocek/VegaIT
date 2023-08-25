@@ -9,7 +9,7 @@ export default function CategoriesCard({ categoryId, categoryName, categories, s
 
     const [showAccordion, setShowAccordion] = useState(false);
 
-    function updateProject(e) {
+    function updateCategory(e) {
         e.preventDefault();
         if (!credentialsValid(e)) {
             alert("Invalid new data");
@@ -29,7 +29,7 @@ export default function CategoriesCard({ categoryId, categoryName, categories, s
         return name.length > 1 && (name != categoryName)
     }
 
-    function deleteProject() {
+    function deleteCategory() {
         axios.delete(`${baseUrl}/api/category/${categoryId}`)
             .then(_ => {
                 const remainingCategories = categories.filter(p => p.id != categoryId);
@@ -44,7 +44,7 @@ export default function CategoriesCard({ categoryId, categoryName, categories, s
             <div className="accordion__intro" onClick={() => setShowAccordion(!showAccordion)}>
                 <h4 className="accordion__title">{categoryName}</h4>
             </div>
-            <form className={`accordion__content ${showAccordion ? 'show_accordion' : 'hide_accordion'}`} onSubmit={updateProject}>
+            <form className={`accordion__content ${showAccordion ? 'show_accordion' : 'hide_accordion'}`} onSubmit={updateCategory}>
                 <div className="info">
                     <div className="info__form">
                         <ul className="info__wrapper">
@@ -57,7 +57,7 @@ export default function CategoriesCard({ categoryId, categoryName, categories, s
                 </div>
                 <div className="btn-wrap">
                     <button type="submit" className="btn btn--green"><span>Save changes</span></button>
-                    <button onClick={deleteProject} type="button" className="btn btn--red"><span>Delete</span></button>
+                    <button onClick={deleteCategory} type="button" className="btn btn--red"><span>Delete</span></button>
                 </div>
             </form>
         </div>
