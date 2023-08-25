@@ -22,7 +22,6 @@ namespace timesheetback.Repositories
         Project SaveProject(Project newProject);
 		Project UpdateProject(Project project, CreateProjectCredentialsDTO projectCredentials);
 
-
     }
 }
 

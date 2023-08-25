@@ -11,10 +11,10 @@ namespace timesheetback.Models
 		public string Name { get; set; }
 		public string Description { get; set; }
 		public string Status { get; set; }
-		public long ClientId { get; set; }
-		public Client Client { get; set; } = null!;
-		public long EmployeeId { get; set; }
-		public Employee Employee { get; set; }
+		public long? ClientId { get; set; }
+		public Client? Client { get; set; } = null!;
+		public long? EmployeeId { get; set; }
+		public Employee? Employee { get; set; }
 
         public Project()
 		{

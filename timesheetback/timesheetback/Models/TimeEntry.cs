@@ -8,14 +8,14 @@ namespace timesheetback.Models
         public double Hours { get; set; }
         public double? Overtime { get; set; }
         public DateTime Date { get; set; }
-		public long EmployeeId { get; set; }
-		public Employee Employee { get; set; } = null!;
-		public long ClientId { get; set; }
-		public Client Client { get; set; } = null!;
-        public long ProjectId { get; set; }
-		public Project Project { get; set; } = null!;
-		public long CategoryId { get; set; }
-		public Category Category { get; set; } = null!;
+		public long? EmployeeId { get; set; }
+		public Employee? Employee { get; set; } = null!;
+		public long? ClientId { get; set; }
+		public Client? Client { get; set; } = null!;
+        public long? ProjectId { get; set; }
+		public Project? Project { get; set; } = null!;
+		public long? CategoryId { get; set; }
+		public Category? Category { get; set; } = null!;
 
         public TimeEntry()
 		{
