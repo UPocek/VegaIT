@@ -73,6 +73,18 @@ namespace timesheetback.Services
             return allClients.Select(client => new ClientDTO(client)).ToList();
         }
 
+        public List<ClientMinimalDTO> GetAllClientsMinimal()
+        {
+            List<Client> allClients = _clientRepository.GetAllClients();
+            return allClients.Select(client => new ClientMinimalDTO(client)).ToList();
+        }
+
+        public async Task<List<ClientMinimalDTO>> GetAllClientsMinimalAsync()
+        {
+            List<Client> allClients = await _clientRepository.GetAllClientsAsync();
+            return allClients.Select(client => new ClientMinimalDTO(client)).ToList();
+        }
+
         public List<CountryDTO> GetAllCountries()
         {
             List<Country> allCountries = _clientRepository.GetAllCountries();

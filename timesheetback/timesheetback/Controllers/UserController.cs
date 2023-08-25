@@ -57,6 +57,18 @@ public class UserController : ControllerBase
 
     }
 
+    [HttpGet("all")]
+    public async Task<List<UserDTO>> GetAllUsers()
+    {
+        return await _userService.GetAllUsersAsync();
+    }
+
+    [HttpGet("all-minimal")]
+    public async Task<List<UserMinimalDTO>> GetAllUsersMinimalInfo()
+    {
+        return await _userService.GetAllUsersMinimalAsync();
+    }
+
     [HttpGet("roles")]
     public async Task<List<RoleDTO>> GetAllRoles() {
         return await _userService.GetAllRolesAsync();

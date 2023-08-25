@@ -7,18 +7,18 @@ namespace timesheetback.Repositories
 	{
 
 		List<Role> GetAllRoles();
-
 		Task<List<Role>> GetAllRolesAsync();
 
 		Employee? GetUserByEmail(string emial);
-
         Task<Employee?> GetUserByEmailAsync(string email);
 
 		Role? GetRoleByName(string roleName);
-
 		Task<Role?> GetRoleByNameAsync(string roleName);
 
-		void SaveUser(Employee user);
+		List<Employee> GetAllEmployees();
+		Task<List<Employee>> GetAllEmployeesAsync();
+
+        void SaveUser(Employee user);
     }
 }
 

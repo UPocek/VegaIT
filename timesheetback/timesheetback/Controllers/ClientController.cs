@@ -38,13 +38,19 @@ namespace timesheetback.Controllers
             return await _clientService.GetAllClientsAsync();
         }
 
+        [HttpGet("all-minimal")]
+        public async Task<List<ClientMinimalDTO>> GetAllClientsMinimalInfo()
+        {
+            return await _clientService.GetAllClientsMinimalAsync();
+        }
+
         [HttpPost]
         public async Task<ActionResult<ClientDTO>> CreateNewClient(CreateClientCredentialsDTO clientCredentials)
         {
             try {
                 return await _clientService.CreateClientAsync(clientCredentials);
             }
-            catch (Exception) {
+            catch (Exception ex) {
                 return BadRequest();
             }
             
@@ -56,7 +62,7 @@ namespace timesheetback.Controllers
             try {
                 return await _clientService.UpdateClientAsync(id, clientCredentials);
             }
-            catch {
+            catch(Exception ex) {
                 return NotFound();
             }
             
@@ -67,7 +73,7 @@ namespace timesheetback.Controllers
         {
             try {
                 await _clientService.DeleteClientAsync(id);
-            }catch (Exception) {
+            }catch (Exception ex) {
                 return BadRequest();
             }
             

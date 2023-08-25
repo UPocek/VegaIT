@@ -14,6 +14,16 @@ namespace timesheetback.Repositories
 			_context = context;
 		}
 
+        public List<Employee> GetAllEmployees()
+        {
+            return _context.Employees.ToList();
+        }
+
+        public Task<List<Employee>> GetAllEmployeesAsync()
+        {
+            return _context.Employees.ToListAsync();
+        }
+
         public List<Role> GetAllRoles()
         {
             return _context.Roles.ToList();

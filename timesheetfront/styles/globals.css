@@ -338,6 +338,10 @@ footer ul li {
   align-items: center;
 }
 
+.convertToFlex label {
+  margin-left: 5px;
+}
+
 @media only screen and (min-width: 991px) {
   .navigation__link {
     display: none;

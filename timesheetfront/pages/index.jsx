@@ -10,13 +10,6 @@ import NavBar from '@/components/NavBar'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-
-  // const [categories, setCategories] = useState([]);
-
-  // function getCategories() {
-  //   axios.get(`${baseUrl}/api/user`).then(result => setCategories(result.data)).catch(error => console.log(error));
-  // }
-
   return (
     <>
       <Head>
@@ -35,6 +28,6 @@ export default function Home() {
 
 function MainArea() {
   return (
-    <div></div>
+    <div>A</div>
   );
 }
