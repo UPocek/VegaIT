@@ -2,6 +2,7 @@
 using timesheetback.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using timesheetback.DTOs;
 
 namespace timesheetback.Repositories
 {
@@ -14,6 +15,20 @@ namespace timesheetback.Repositories
 			_context = context;
 		}
 
+        public void DeleteEmployee(long id)
+        {
+            var employeeToDelete = _context.Employees.Find(id) ?? throw new Exception("Employee with that id does not exist");
+            _context.Employees.Remove(employeeToDelete);
+            _context.SaveChanges();
+        }
+
+        public async Task DeleteEmployeeAsync(long id)
+        {
+            var employeeToDelete = await _context.Employees.FirstOrDefaultAsync(employee => employee.Id == id) ?? throw new Exception("Employee with that id does not exist");
+            _context.Employees.Remove(employeeToDelete);
+            _context.SaveChanges();
+        }
+
         public List<Employee> GetAllEmployees()
         {
             return _context.Employees.ToList();
@@ -24,14 +39,14 @@ namespace timesheetback.Repositories
             return _context.Employees.ToListAsync();
         }
 
-        public List<Role> GetAllRoles()
+        public Employee? GetEmployeeById(long id)
         {
-            return _context.Roles.ToList();
+            return _context.Employees.Find(id);
         }
 
-        public Task<List<Role>> GetAllRolesAsync()
+        public Task<Employee?> GetEmployeeByIdAsync(long id)
         {
-            return _context.Roles.ToListAsync();
+            return _context.Employees.FirstOrDefaultAsync(employee => employee.Id == id);
         }
 
         public Role? GetRoleByName(string roleName)
@@ -58,6 +73,19 @@ namespace timesheetback.Repositories
         {
             _context.Employees.Add(user);
             _context.SaveChanges();
+        }
+
+        public Employee UpdateEmployee(Employee employeeToUpdate, RegistrationCredentialsDTO registrationCredentials)
+        {
+            employeeToUpdate.Name = registrationCredentials.Name;
+            employeeToUpdate.Username = registrationCredentials.Username;
+            employeeToUpdate.Email = registrationCredentials.Email;
+            employeeToUpdate.IsActive = (bool)(registrationCredentials.Status == null ? true : registrationCredentials.Status);
+            employeeToUpdate.Role = GetRoleByName(registrationCredentials.Role) ?? throw new Exception("Invalid role passed");
+
+            _context.SaveChanges();
+
+            return employeeToUpdate;
         }
     }
 }

@@ -9,17 +9,20 @@ namespace timesheetback.Services
         Employee? ProccessUserLogin(LoginCredentialsDTO loginCredentials);
         Task<Employee?> ProccessUserLoginAsync(LoginCredentialsDTO loginCredentials);
 
-        Task ProccessUserRegistrationAsync(RegistrationCredentialsDTO registrationCredentials);
         void ProccessUserRegistration(RegistrationCredentialsDTO registrationCredentials);
-
-        List<RoleDTO> GetAllRoles();
-        Task<List<RoleDTO>> GetAllRolesAsync();
+        Task ProccessUserRegistrationAsync(RegistrationCredentialsDTO registrationCredentials);
 
         List<UserDTO> GetAllUsers();
         Task<List<UserDTO>> GetAllUsersAsync();
 
         List<UserMinimalDTO> GetAllUsersMinimal();
         Task<List<UserMinimalDTO>> GetAllUsersMinimalAsync();
+
+        UserDTO UpdateUser(long id, RegistrationCredentialsDTO registrationCredentials);
+        Task<UserDTO> UpdateUserAsync(long id, RegistrationCredentialsDTO registrationCredentials);
+
+        void DeleteUser(long id);
+        Task DeleteUserAsync(long id);
     }
 }
 
