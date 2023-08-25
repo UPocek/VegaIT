@@ -35,9 +35,9 @@ export default function ClientCard({ cities, countries, clientId, clientName, cl
     function deleteClient() {
         axios.delete(`${baseUrl}/api/client/${clientId}`)
             .then(_ => {
-                alert("Client deleted successfully");
                 const remainingClients = clients.filter(c => c.id != clientId);
                 setClients(remainingClients);
+                alert("Client deleted successfully");
             })
             .catch(error => console.log(error));
     }

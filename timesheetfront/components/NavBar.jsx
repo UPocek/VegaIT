@@ -2,14 +2,18 @@ import Image from "next/image";
 import Link from "next/link";
 import { getUserUsername, logOut } from "@/helper/helper";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 export default function NavBar() {
 
     const [username, setUsername] = useState('');
+    const [urlPath, setUrlPath] = useState('');
+    const router = useRouter();
 
     useEffect(() => {
         setUsername(getUserUsername());
-    }, [])
+        setUrlPath(router.pathname);
+    }, [router.pathname])
 
     return (
         <header className="header">
@@ -21,22 +25,22 @@ export default function NavBar() {
                     <button id="navigation__link" type="button" className="navigation__link"><span id="navigation__text" className="nav-toggle" /></button>
                     <ul className="navigation__menu">
                         <li className="navigation__list">
-                            <Link href="/" className="btn navigation__button navigation__button--active">Timesheet</Link>
+                            <Link href="/" className={`btn navigation__button ${urlPath == '/' ? 'navigation__button--active' : ''}`}>Timesheet</Link>
                         </li>
                         <li className="navigation__list">
-                            <Link href="/clients" className="btn navigation__button">Clients</Link>
+                            <Link href="/clients" className={`btn navigation__button ${urlPath.startsWith('/clients') ? 'navigation__button--active' : ''}`}>Clients</Link>
                         </li>
                         <li className="navigation__list">
-                            <Link href="/projects" className="btn navigation__button">Projects</Link>
+                            <Link href="/projects" className={`btn navigation__button ${urlPath.startsWith('/projects') ? 'navigation__button--active' : ''}`}>Projects</Link>
                         </li>
                         <li className="navigation__list">
-                            <Link href="/categories" className="btn navigation__button">Categories</Link>
+                            <Link href="/categories" className={`btn navigation__button ${urlPath.startsWith('/categories') ? 'navigation__button--active' : ''}`}>Categories</Link>
                         </li>
                         <li className="navigation__list">
-                            <Link href="/employees" className="btn navigation__button">Employees</Link>
+                            <Link href="/employees" className={`btn navigation__button ${urlPath.startsWith('/employees') ? 'navigation__button--active' : ''}`}>Employees</Link>
                         </li>
                         <li className="navigation__list">
-                            <Link href="/reports" className="btn navigation__button">Reports</Link>
+                            <Link href="/reports" className={`btn navigation__button ${urlPath.startsWith('/reports') ? 'navigation__button--active' : ''}`}>Reports</Link>
                         </li>
                     </ul>
                 </nav>

@@ -7,8 +7,8 @@ export default function ClientModal({ cities, countries, setShowModal, clients, 
 
     const [name, setName] = useState('');
     const [address, setAddress] = useState('');
-    const [city, setCity] = useState(1);
-    const [country, setCountry] = useState(1);
+    const [city, setCity] = useState(cities[0].id);
+    const [country, setCountry] = useState(countries[0].id);
 
     function createNewClient(e) {
         e.preventDefault();
