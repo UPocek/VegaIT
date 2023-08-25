@@ -69,10 +69,11 @@ namespace timesheetback.Repositories
             return _context.Employees.Include(e => e.Role).FirstOrDefaultAsync(employee => employee.Email == email);
         }
 
-        public void SaveUser(Employee user)
+        public Employee SaveUser(Employee user)
         {
             _context.Employees.Add(user);
             _context.SaveChanges();
+            return user;
         }
 
         public Employee UpdateEmployee(Employee employeeToUpdate, RegistrationCredentialsDTO registrationCredentials)

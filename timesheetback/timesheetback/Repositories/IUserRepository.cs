@@ -23,7 +23,7 @@ namespace timesheetback.Repositories
 		Task DeleteEmployeeAsync(long id);
 
         Employee UpdateEmployee(Employee employeeToUpdate, RegistrationCredentialsDTO registrationCredentials);
-        void SaveUser(Employee user);
+        Employee SaveUser(Employee user);
     }
 }
 

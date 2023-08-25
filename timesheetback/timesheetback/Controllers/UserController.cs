@@ -43,12 +43,11 @@ public class UserController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("registration")]
-    public async Task<IActionResult> Registration(RegistrationCredentialsDTO registrationCredentials)
+    public async Task<ActionResult<UserDTO>> Registration(RegistrationCredentialsDTO registrationCredentials)
     {
         try
         {
-            await _userService.ProccessUserRegistrationAsync(registrationCredentials);
-            return Ok();
+            return await _userService.ProccessUserRegistrationAsync(registrationCredentials);
         }
         catch (Exception ex)
         {
@@ -69,7 +68,7 @@ public class UserController : ControllerBase
         return await _userService.GetAllUsersMinimalAsync();
     }
 
-    [HttpPut("id")]
+    [HttpPut("{id}")]
     public async Task<ActionResult<UserDTO>> UpdateUser(long id, RegistrationCredentialsDTO registrationCredentials)
     {
         try {
@@ -80,7 +79,7 @@ public class UserController : ControllerBase
         
     }
 
-    [HttpDelete("id")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(long id)
     {
         try {

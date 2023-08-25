@@ -35,7 +35,7 @@ namespace timesheetback.Services
             return (VerifyPassword(loginCredentials.Password, userToLogin.Password) && VerifyUserActive(userToLogin)) ? userToLogin : null;
         }
 
-        public void ProccessUserRegistration(RegistrationCredentialsDTO registrationCredentials)
+        public UserDTO ProccessUserRegistration(RegistrationCredentialsDTO registrationCredentials)
         {
             if (_userRepository.GetUserByEmail(registrationCredentials.Email) != null || registrationCredentials.Password is null)
             {
@@ -45,10 +45,10 @@ namespace timesheetback.Services
             Role? roleToAssign = _userRepository.GetRoleByName(registrationCredentials.Role) ?? throw new Exception("Invalid role passed");
             var newEmployee = new Employee(registrationCredentials, roleToAssign);
 
-            _userRepository.SaveUser(newEmployee);
+            return new UserDTO(_userRepository.SaveUser(newEmployee));
         }
 
-        public async Task ProccessUserRegistrationAsync(RegistrationCredentialsDTO registrationCredentials)
+        public async Task<UserDTO> ProccessUserRegistrationAsync(RegistrationCredentialsDTO registrationCredentials)
         {
             if (await _userRepository.GetUserByEmailAsync(registrationCredentials.Email) != null || registrationCredentials.Password is null) {
                 throw new Exception("User with that email already exists");
@@ -57,7 +57,7 @@ namespace timesheetback.Services
             Role? roleToAssign = await _userRepository.GetRoleByNameAsync(registrationCredentials.Role) ?? throw new Exception("Invalid role passed");
             var newEmployee = new Employee(registrationCredentials, roleToAssign);
 
-            _userRepository.SaveUser(newEmployee);
+            return new UserDTO(_userRepository.SaveUser(newEmployee));
         }
 
         private string HashPasword(string password)
@@ -109,14 +109,14 @@ namespace timesheetback.Services
 
         public UserDTO UpdateUser(long id, RegistrationCredentialsDTO registrationCredentials)
         {
-            Employee EmployeeToUpdate = _userRepository.GetEmployeeById(id) ?? throw new Exception("Employee with that id does not exist");
-            return new UserDTO(_userRepository.UpdateEmployee(EmployeeToUpdate, registrationCredentials));
+            Employee employeeToUpdate = _userRepository.GetEmployeeById(id) ?? throw new Exception("Employee with that id does not exist");
+            return new UserDTO(_userRepository.UpdateEmployee(employeeToUpdate, registrationCredentials));
         }
 
         public async Task<UserDTO> UpdateUserAsync(long id, RegistrationCredentialsDTO registrationCredentials)
         {
-            Employee EmployeeToUpdate = await _userRepository.GetEmployeeByIdAsync(id) ?? throw new Exception("Employee with that id does not exist");
-            return new UserDTO(_userRepository.UpdateEmployee(EmployeeToUpdate, registrationCredentials));
+            Employee employeeToUpdate = await _userRepository.GetEmployeeByIdAsync(id) ?? throw new Exception("Employee with that id does not exist");
+            return new UserDTO(_userRepository.UpdateEmployee(employeeToUpdate, registrationCredentials));
         }
 
         public void DeleteUser(long id)

@@ -22,7 +22,7 @@ export default function EmployeesCard({ roles, userId, userName, userUsername, u
         }
         axios.put(`${baseUrl}/api/user/${userId}`, { 'name': name, 'username': username, 'role': role, 'email': email, 'status': status == 'active' })
             .then(response => {
-                const allUsers = users.filter(p => p.id != userId);
+                let allUsers = users.filter(userToFilter => userToFilter.id != userId);
                 allUsers.push(response.data);
                 setUsers(allUsers);
                 alert("user updated successfully");
@@ -78,7 +78,7 @@ export default function EmployeesCard({ roles, userId, userName, userUsername, u
                             </li>
                             <p className="info__label">Role:</p>
                             <li className="info__list convertToFlex" onChange={(e) => setRole(e.target.value)}>
-                                {roles.map(roleItem => (
+                                {role && roles.map(roleItem => (
                                     <span key={roleItem.id}>
                                         <label htmlFor={roleItem.name} className="info__label">{capitalizeFirstLetter(roleItem.name)}</label>
                                         <input type="radio" name="role" id={roleItem.name} value={roleItem.name} defaultChecked={role === roleItem.name} />
