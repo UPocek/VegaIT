@@ -20,8 +20,10 @@ export default function ClientCard({ cities, countries, clientId, clientName, cl
         }
         axios.put(`${baseUrl}/api/client/${clientId}`, { 'name': name, 'address': address, 'countryId': country, 'cityId': city })
             .then(response => {
+                const allClients = clients.filter(c => c.id != clientId);
+                allClients.push(response.data);
+                setClients(allClients);
                 alert("Client updated successfully");
-                console.log(response.data);
             })
             .catch(error => console.log(error));
     }

@@ -6,15 +6,15 @@ import ClientCard from "./ClientCard";
 
 export default function ClientsPreview() {
     const alphabetChacacters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
-    const numberOfTabs = 1;
+    const [numberOfTabs, setNumberOfTabs] = useState(1);
     const [showModal, setShowModal] = useState(false);
     const [currentTabIndex, setCurrentTabIndex] = useState(1);
     const [searchLetter, setSearchLetter] = useState('');
-
     const [cities, setCities] = useState([]);
     const [countries, setCountries] = useState([]);
     const [clients, setClients] = useState([]);
     const [firstLetters, setFirstLetters] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         let letters = [];
@@ -36,12 +36,21 @@ export default function ClientsPreview() {
             .catch(error => console.log(error));
     }, [])
 
-    function searchClients() {
-
+    function searchClients(e) {
+        e.preventDefault();
+        setSearchLetter('');
+        setSearchQuery(e.target.searchText.value);
     }
 
     function searchByLetter(letter) {
         setSearchLetter(letter);
+        setSearchQuery(letter);
+    }
+
+    function fulfillsSearch(client) {
+        if (searchQuery == '') return true;
+        return client.name.toLowerCase().startsWith(searchQuery.toLowerCase());
+
     }
 
     function previous() {
@@ -62,7 +71,7 @@ export default function ClientsPreview() {
                         <div className="table-navigation">
                             <button onClick={() => setShowModal(true)} className="table-navigation__create btn-modal"><span>Create new client</span></button>
                             <form className="table-navigation__input-container" onSubmit={searchClients}>
-                                <input type="text" className="table-navigation__search" />
+                                <input type="text" name="searchText" id="searchText" className="table-navigation__search" placeholder="" />
                                 <button type="submit" className="icon__search" />
                             </form>
                         </div>
@@ -71,7 +80,7 @@ export default function ClientsPreview() {
                                 {alphabetChacacters.map(letter => <li key={letter} className="alphabet__list"> <button onClick={() => searchByLetter(letter)} className={`alphabet__button ${searchLetter == letter ? 'alphabet__button--active' : ''}  ${!firstLetters.includes(letter) ? 'alphabet__button--disabled' : ''}`}>{letter}</button> </li>)}
                             </ul>
                         </div>
-                        {clients.map(client => <ClientCard key={client.id} cities={cities} countries={countries} clientId={client.id} clientName={client.name} clientAddress={client.address} clientCity={client.cityId} clientCountry={client.countryId} clients={clients} setClients={setClients} />)}
+                        {clients.filter(client => fulfillsSearch(client)).map(client => <ClientCard key={client.id} cities={cities} countries={countries} clientId={client.id} clientName={client.name} clientAddress={client.address} clientCity={client.cityId} clientCountry={client.countryId} clients={clients} setClients={setClients} />)}
                     </div>
                     <div className="pagination">
                         <ul className="pagination__navigation">
