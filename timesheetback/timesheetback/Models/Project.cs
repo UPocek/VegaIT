@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Net.NetworkInformation;
+using timesheetback.DTOs;
+
 namespace timesheetback.Models
 {
 	public class Project
@@ -27,6 +30,14 @@ namespace timesheetback.Models
             Client = client;
             EmployeeId = employeeId;
             Employee = employee;
+        }
+
+        public Project(CreateProjectCredentialsDTO projectCredentials) {
+            Name = projectCredentials.Name;
+            Description = projectCredentials.Description;
+            Status = projectCredentials.Status;
+            ClientId = projectCredentials.ClientId;
+            EmployeeId = projectCredentials.EmployeeId;
         }
     }
 }

@@ -21,6 +21,9 @@ namespace timesheetback.Services
 		List<ClientDTO> GetAllClients();
 		Task<List<ClientDTO>> GetAllClientsAsync();
 
+		List<ClientMinimalDTO> GetAllClientsMinimal();
+		Task<List<ClientMinimalDTO>> GetAllClientsMinimalAsync();
+
         void DeleteClient(long id);
 		Task DeleteClientAsync(long id);
 

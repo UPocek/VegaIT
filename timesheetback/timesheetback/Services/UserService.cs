@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using timesheetback.DTOs;
@@ -92,6 +93,30 @@ namespace timesheetback.Services
 
         private bool VerifyUserActive(Employee employee) {
             return employee.IsActive;
+        }
+
+        public List<UserDTO> GetAllUsers()
+        {
+            List<Employee> allEmployees = _userRepository.GetAllEmployees();
+            return allEmployees.Select(employee => new UserDTO(employee)).ToList();
+        }
+
+        public async Task<List<UserDTO>> GetAllUsersAsync()
+        {
+            List<Employee> allEmployees = await _userRepository.GetAllEmployeesAsync();
+            return allEmployees.Select(employee => new UserDTO(employee)).ToList();
+        }
+
+        public List<UserMinimalDTO> GetAllUsersMinimal()
+        {
+            List<Employee> allEmployees = _userRepository.GetAllEmployees();
+            return allEmployees.Select(employee => new UserMinimalDTO(employee)).ToList();
+        }
+
+        public async Task<List<UserMinimalDTO>> GetAllUsersMinimalAsync()
+        {
+            List<Employee> allEmployees = await _userRepository.GetAllEmployeesAsync();
+            return allEmployees.Select(emmployee => new UserMinimalDTO(emmployee)).ToList();
         }
     }
 }
