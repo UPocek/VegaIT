@@ -10,8 +10,8 @@ namespace timesheetback.DTOs
         public string Name { get; set; }
         public string Description { get; set; }
         public string Status { get; set; }
-        public long ClientId { get; set; }
-        public long EmployeeId { get; set; }
+        public long? ClientId { get; set; }
+        public long? EmployeeId { get; set; }
 
         public ProjectDTO()
 		{
