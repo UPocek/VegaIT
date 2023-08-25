@@ -41,6 +41,12 @@ namespace timesheetback.Models
                 new Country { Id = 3, Name = "Germany" }
             );
 
+            modelBuilder.Entity<City>().HasData(
+               new City { Id = 1, Name = "Novi Sad", Zip="21000" },
+               new City { Id = 2, Name = "Chicago" , Zip = "60007" },
+               new City { Id = 3, Name = "Berlin" , Zip = "10115" }
+           );
+
             modelBuilder.Entity<Category>().HasData(
                new Category { Id = 1, Name = "Standard" },
                new Category { Id = 2, Name = "Bonus" },
