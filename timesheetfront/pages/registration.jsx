@@ -1,10 +1,9 @@
 /* eslint-disable react/no-multi-comp */
-import EmployeesPreview from "@/components/EmployeesPreview";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
+import RegistrationForm from "@/components/RegistrationForm";
 
-
-export default function Employees() {
+export default function Registration() {
     return (
         <>
             <NavBar />
@@ -16,6 +15,6 @@ export default function Employees() {
 
 function MainArea() {
     return (
-        <EmployeesPreview />
+        <RegistrationForm />
     );
 }

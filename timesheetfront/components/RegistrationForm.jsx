@@ -19,7 +19,11 @@ export default function RegistrationForm() {
             return;
         }
 
-        axios.post(`${baseUrl}/api/user/registration`, { 'name': name, 'username': username, 'role': role, 'email': email, 'password': password })
+        axios.post(`${baseUrl}/api/user/registration`, { 'name': name, 'username': username, 'role': role, 'email': email, 'password': password }, {
+            headers: {
+                'skip': 'true'
+            }
+        })
             .then(response => { setBadRequest(false); setCredentialsNotValid(false); alert(`New employee added sucessfully ${response.data} !`) })
             .catch(_ => { setCredentialsNotValid(false); setBadRequest(true) });
     }

@@ -43,16 +43,15 @@ public class UserController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("registration")]
-    public async Task<IActionResult> Registration(RegistrationCredentialsDTO registrationCredentials)
+    public async Task<ActionResult<UserDTO>> Registration(RegistrationCredentialsDTO registrationCredentials)
     {
         try
         {
-            await _userService.ProccessUserRegistrationAsync(registrationCredentials);
-            return Ok();
+            return await _userService.ProccessUserRegistrationAsync(registrationCredentials);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return BadRequest();
+            return BadRequest(ex.Message);
         }
 
     }
@@ -69,9 +68,29 @@ public class UserController : ControllerBase
         return await _userService.GetAllUsersMinimalAsync();
     }
 
-    [HttpGet("roles")]
-    public async Task<List<RoleDTO>> GetAllRoles() {
-        return await _userService.GetAllRolesAsync();
+    [HttpPut("{id}")]
+    public async Task<ActionResult<UserDTO>> UpdateUser(long id, RegistrationCredentialsDTO registrationCredentials)
+    {
+        try {
+            return await _userService.UpdateUserAsync(id, registrationCredentials);
+        }catch(Exception ex) {
+            return BadRequest(ex.Message);
+        }
+        
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteUser(long id)
+    {
+        try {
+            await _userService.DeleteUserAsync(id);
+        }catch(Exception ex) {
+            return BadRequest(ex.Message);
+        }
+
+        return Ok();
+        
+    }
+
 }
 

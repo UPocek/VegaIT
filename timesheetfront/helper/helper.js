@@ -47,3 +47,11 @@ export function getQueryVariable(variable) {
     }
     return (false);
 }
+
+export function roleIdToName(roles, roleId) {
+    for (let role of roles) {
+        if (role.id == roleId) {
+            return role.name
+        }
+    }
+}

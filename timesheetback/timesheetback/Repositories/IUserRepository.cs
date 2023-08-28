@@ -1,13 +1,11 @@
 ﻿using System;
+using timesheetback.DTOs;
 using timesheetback.Models;
 
 namespace timesheetback.Repositories
 {
 	public interface IUserRepository
 	{
-
-		List<Role> GetAllRoles();
-		Task<List<Role>> GetAllRolesAsync();
 
 		Employee? GetUserByEmail(string emial);
         Task<Employee?> GetUserByEmailAsync(string email);
@@ -18,7 +16,14 @@ namespace timesheetback.Repositories
 		List<Employee> GetAllEmployees();
 		Task<List<Employee>> GetAllEmployeesAsync();
 
-        void SaveUser(Employee user);
+		Employee? GetEmployeeById(long id);
+        Task<Employee?> GetEmployeeByIdAsync(long id);
+
+		void DeleteEmployee(long id);
+		Task DeleteEmployeeAsync(long id);
+
+        Employee UpdateEmployee(Employee employeeToUpdate, RegistrationCredentialsDTO registrationCredentials);
+        Employee SaveUser(Employee user);
     }
 }
 

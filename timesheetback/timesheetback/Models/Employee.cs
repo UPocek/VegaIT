@@ -38,7 +38,7 @@ namespace timesheetback.Models
             Username = registrationCredentials.Username;
             Email = registrationCredentials.Email;
             Password = registrationCredentials.Password;
-            IsActive = true;
+            IsActive = (bool)(registrationCredentials.Status == null ? true : registrationCredentials.Status);
             Role = role;
             TimeEntrys = new List<TimeEntry>();
         }
