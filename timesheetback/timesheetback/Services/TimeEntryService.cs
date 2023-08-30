@@ -14,6 +14,9 @@ namespace timesheetback.Services
         private readonly IUserRepository _userRepository;
         private readonly IJwtService _jwtService;
 
+        private readonly double fullTimeWorkHours = 7.5;
+        private readonly double hoursInDay = 24.0;
+
         public TimeEntryService(ITimeEntryRepository timeEntryRepository, IUserRepository userRepository, IJwtService jwtService)
 		{
             _timeEntryRepository = timeEntryRepository;
@@ -37,9 +40,18 @@ namespace timesheetback.Services
             double totalHours = userEnteriesForThisDay.Sum(entry => entry.Hours);
             double totalOvertime = userEnteriesForThisDay.Sum(entry => entry.Overtime ?? 0);
 
+            if (totalHours + newTimeEntry.Hours > fullTimeWorkHours)
+            {
+                throw new Exception($"Can't have more then {fullTimeWorkHours} reqular working hours. Everything after {fullTimeWorkHours} has to be overtime.");
+            }
+
+            if (totalHours + newTimeEntry.Hours < fullTimeWorkHours && totalOvertime + newTimeEntry.Overtime > 0) {
+                throw new Exception("First enter regular hours then overtime");
+            }
+
             double hoursWorkedThisDay = totalHours + totalOvertime;
-            if(hoursWorkedThisDay + newTimeEntry.Hours + newTimeEntry.Overtime > 24.0) {
-                throw new Exception("Can't work more then 24h in one day.");
+            if(hoursWorkedThisDay + newTimeEntry.Hours + newTimeEntry.Overtime > hoursInDay) {
+                throw new Exception($"Can't work more then {hoursInDay}h in one day.");
             }
             return new TimeEntryDTO(_timeEntryRepository.SaveEntry(user, new TimeEntry(newTimeEntry)));
         }
@@ -59,6 +71,16 @@ namespace timesheetback.Services
 
             double totalHours = userEnteriesForThisDay.Sum(entry => entry.Hours);
             double totalOvertime = userEnteriesForThisDay.Sum(entry => entry.Overtime ?? 0);
+
+            if (totalHours + newTimeEntry.Hours > fullTimeWorkHours)
+            {
+                throw new Exception($"Can't have more then {fullTimeWorkHours} reqular working hours. Everything after {fullTimeWorkHours} has to be overtime.");
+            }
+
+            if (totalHours + newTimeEntry.Hours < fullTimeWorkHours && totalOvertime + newTimeEntry.Overtime > 0)
+            {
+                throw new Exception("First enter regular hours then overtime");
+            }
 
             double hoursWorkedThisDay = totalHours + totalOvertime;
             if (hoursWorkedThisDay + newTimeEntry.Hours + newTimeEntry.Overtime > 24.0)
