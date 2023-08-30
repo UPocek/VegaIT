@@ -1,4 +1,8 @@
 ﻿using System;
+using Microsoft.CodeAnalysis;
+using timesheetback.DTOs;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 namespace timesheetback.Models
 {
 	public class TimeEntry
@@ -36,6 +40,16 @@ namespace timesheetback.Models
             Project = project;
             CategoryId = categoryId;
             Category = category;
+        }
+
+        public TimeEntry(NewTimeEntryDTO newTimeEntry) {
+            Description = newTimeEntry.Description;
+            Hours = newTimeEntry.Hours;
+            Overtime = newTimeEntry.Overtime;
+            Date = DateTime.Parse(newTimeEntry.Date);
+            ClientId = newTimeEntry.ClientId;
+            ProjectId = newTimeEntry.ProjectId;
+            CategoryId = newTimeEntry.CategoryId;
         }
     }
 }
