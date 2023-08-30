@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { baseUrl } from "@/pages/_app";
@@ -6,8 +7,12 @@ import Alphabet from "./Alphabet";
 import Pagination from "./Pagination";
 import ProjectModal from "./ProjectModal";
 import ProjectCard from "./ProjectCard";
+import { useRouter } from "next/router";
 
 export default function ProjectsPreview() {
+
+    const router = useRouter();
+
     const [showModal, setShowModal] = useState(false);
     const [searchLetter, setSearchLetter] = useState('');
     const [employees, setEmployees] = useState([]);
@@ -32,6 +37,17 @@ export default function ProjectsPreview() {
         updateLetters(projects);
     }, [projects]);
 
+    useEffect(() => {
+        const search = router.query.search;
+        if (search == null || search.length <= 0) return;
+        if (search.length == 1 && searchLetter == '') {
+            setSearchLetter(search);
+        }
+        if (searchQuery == '') {
+            setSearchQuery(search);
+        }
+    }, [router.query.search]);
+
     function updateLetters(dataForLetters) {
         let letters = [];
         for (let element of dataForLetters) {
@@ -45,11 +61,13 @@ export default function ProjectsPreview() {
         e.preventDefault();
         setSearchLetter('');
         setSearchQuery(e.target.searchText.value);
+        router.replace(`/projects?search=${e.target.searchText.value}`);
     }
 
     function searchProjectsByLetter(letter) {
         setSearchLetter(letter);
         setSearchQuery(letter);
+        router.replace(`/projects?search=${letter}`);
     }
 
     function fulfillsSearch(client) {

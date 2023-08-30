@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import NavBar from '@/components/NavBar'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import TableNavigation from '@/components/TableNavigation'
 import TableData from '@/components/TableData'
 // import axios from 'axios';
