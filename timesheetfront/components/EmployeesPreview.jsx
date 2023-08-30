@@ -17,10 +17,12 @@ export default function EmployeesPreview() {
 
     useEffect(() => {
         axios.get(`${baseUrl}/api/role/all`)
-            .then(response => setRoles(response.data))
-            .catch(error => console.log(error));
-        axios.get(`${baseUrl}/api/user/all`)
-            .then(response => setUsers(response.data))
+            .then(response => {
+                setRoles(response.data);
+                axios.get(`${baseUrl}/api/user/all`)
+                    .then(response => setUsers(response.data))
+                    .catch(error => console.log(error));
+            })
             .catch(error => console.log(error));
     }, []);
 

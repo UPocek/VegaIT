@@ -421,6 +421,15 @@ li {
   align-items: baseline;
 }
 
+.table-navigation button {
+  border: none;
+}
+
+.table-navigation__prev,
+.table-navigation__next {
+  cursor: pointer;
+}
+
 .table-navigation__prev {
   color: #f1592a;
   font-weight: 600;
@@ -599,6 +608,10 @@ li {
   background: #ececec;
 }
 
+.month-table__regular--important {
+  background: rgba(241, 89, 42, .4);
+}
+
 .month-table__regular {
   width: 14%;
   border: 1px solid #dedede;
@@ -726,6 +739,7 @@ li {
   border-right: none;
   background: #fff;
   text-decoration: none;
+  cursor: pointer;
   transition: background 0.2s linear;
 }
 
@@ -747,6 +761,10 @@ li {
   color: #444;
   display: block;
   text-decoration: none;
+  background-color: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
 }
 
 .day-table__month {
@@ -779,6 +797,11 @@ li {
   .hide-on-mob {
     display: none;
   }
+}
+
+.tableEnteriesMain p {
+  font-size: 2rem;
+  margin-top: 20px;
 }
 
 .project-table {
@@ -1194,6 +1217,10 @@ input[type=number] {
 
 .initial-form__checkbox {
   margin-right: auto;
+}
+
+.disable_calendar_element {
+  display: none;
 }
 
 /* Header */
