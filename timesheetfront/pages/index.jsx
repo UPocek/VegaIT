@@ -3,7 +3,9 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import NavBar from '@/components/NavBar'
-// import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import TableNavigation from '@/components/TableNavigation'
+import TableData from '@/components/TableData'
 // import axios from 'axios';
 // import { baseUrl } from './_app';
 
@@ -27,7 +29,16 @@ export default function Home() {
 }
 
 function MainArea() {
+  const [today, setToday] = useState(new Date());
+  const [dateToShow, setDateToShow] = useState(new Date());
+
   return (
-    <div>A</div>
+    <div className="wrapper">
+      <section className="main-content">
+        <h2 className="main-content__title">Timesheet</h2>
+        <TableNavigation dateToShow={dateToShow} setDateToShow={setDateToShow} />
+        <TableData today={today} dateToShow={dateToShow} />
+      </section>
+    </div>
   );
 }

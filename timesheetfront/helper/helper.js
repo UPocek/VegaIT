@@ -55,3 +55,31 @@ export function roleIdToName(roles, roleId) {
         }
     }
 }
+
+export function getMonthNameFromIndex(index) {
+    const month = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    return month[index];
+}
+
+export function getMonthShortNameFromIndex(index) {
+    const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return month[index];
+}
+
+export function getWeekDayNameFromIndex(index) {
+    const month = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    return month[index];
+}
+
+export function getWeekDayShortNameFromIndex(index) {
+    const month = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    return month[index];
+}
+
+export function datesEqual(firstDay, secondDay) {
+    return firstDay.getFullYear() == secondDay.getFullYear() && firstDay.getMonth() == secondDay.getMonth() && firstDay.getDate() == secondDay.getDate();
+}
+
+export function datesCompare(first, second) {
+    return first > second ? 1 : first == second ? 0 : -1;
+}
