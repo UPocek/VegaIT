@@ -20,25 +20,28 @@ export default function NavBar() {
     return (
         <header className="header">
             <div className="inner-wrap">
-                <a href="./index.html" className="logo">
+                <Link href="/" className="logo">
                     <Image src="/images/logo-white.png" width={115} height={54} alt="Logo" />
-                </a>
+                </Link>
                 <nav className="navigation">
                     <button id="navigation__link" type="button" className="navigation__link"><span id="navigation__text" className="nav-toggle" /></button>
                     <ul className="navigation__menu">
                         <li className="navigation__list">
                             <Link href="/" className={`btn navigation__button ${urlPath == '/' ? 'navigation__button--active' : ''}`}>Timesheet</Link>
                         </li>
-                        <li className="navigation__list">
-                            <Link href="/clients" className={`btn navigation__button ${urlPath.startsWith('/clients') ? 'navigation__button--active' : ''}`}>Clients</Link>
-                        </li>
-                        <li className="navigation__list">
-                            <Link href="/projects" className={`btn navigation__button ${urlPath.startsWith('/projects') ? 'navigation__button--active' : ''}`}>Projects</Link>
-                        </li>
-                        <li className="navigation__list">
-                            <Link href="/categories" className={`btn navigation__button ${urlPath.startsWith('/categories') ? 'navigation__button--active' : ''}`}>Categories</Link>
-                        </li>
-                        {role == 'worker' &&
+                        {role == 'admin' &&
+                            <li className="navigation__list">
+                                <Link href="/clients" className={`btn navigation__button ${urlPath.startsWith('/clients') ? 'navigation__button--active' : ''}`}>Clients</Link>
+                            </li>}
+                        {role == 'admin' &&
+                            <li className="navigation__list">
+                                <Link href="/projects" className={`btn navigation__button ${urlPath.startsWith('/projects') ? 'navigation__button--active' : ''}`}>Projects</Link>
+                            </li>}
+                        {role == 'admin' &&
+                            <li className="navigation__list">
+                                <Link href="/categories" className={`btn navigation__button ${urlPath.startsWith('/categories') ? 'navigation__button--active' : ''}`}>Categories</Link>
+                            </li>}
+                        {role == 'admin' &&
                             <li className="navigation__list">
                                 <Link href="/employees" className={`btn navigation__button ${urlPath.startsWith('/employees') ? 'navigation__button--active' : ''}`}>Employees</Link>
                             </li>}
