@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { baseUrl } from "@/pages/_app";
@@ -6,8 +7,12 @@ import Alphabet from "./Alphabet";
 import Pagination from "./Pagination";
 import CategoriesModal from "./CategoriesModal";
 import CategoriesCard from "./CategoriesCard";
+import { useRouter } from "next/router";
 
 export default function CategoriesPreview() {
+
+    const router = useRouter();
+
     const [showModal, setShowModal] = useState(false);
     const [searchLetter, setSearchLetter] = useState('');
     const [categories, setCategories] = useState([]);
@@ -24,6 +29,17 @@ export default function CategoriesPreview() {
         updateLetters(categories);
     }, [categories]);
 
+    useEffect(() => {
+        const search = router.query.search;
+        if (search == null || search.length <= 0) return;
+        if (search.length == 1 && searchLetter == '') {
+            setSearchLetter(search);
+        }
+        if (searchQuery == '') {
+            setSearchQuery(search);
+        }
+    }, [router.query.search]);
+
     function updateLetters(dataForLetters) {
         let letters = [];
         for (let element of dataForLetters) {
@@ -37,11 +53,13 @@ export default function CategoriesPreview() {
         e.preventDefault();
         setSearchLetter('');
         setSearchQuery(e.target.searchText.value);
+        router.replace(`/categories?search=${e.target.searchText.value}`);
     }
 
     function searchCategoriesByLetter(letter) {
         setSearchLetter(letter);
         setSearchQuery(letter);
+        router.replace(`/categories?search=${letter}`);
     }
 
     function fulfillsSearch(client) {

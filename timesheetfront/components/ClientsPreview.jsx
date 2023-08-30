@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import ClientModal from "./ClientModel";
 import axios from "axios";
@@ -6,8 +7,12 @@ import ClientCard from "./ClientCard";
 import ElementsSearch from "./ElementsSearch";
 import Alphabet from "./Alphabet";
 import Pagination from "./Pagination";
+import { useRouter } from "next/router";
 
 export default function ClientsPreview() {
+
+    const router = useRouter();
+
     const [showModal, setShowModal] = useState(false);
     const [searchLetter, setSearchLetter] = useState('');
     const [cities, setCities] = useState([]);
@@ -32,6 +37,17 @@ export default function ClientsPreview() {
         updateLetters(clients);
     }, [clients]);
 
+    useEffect(() => {
+        const search = router.query.search;
+        if (search == null || search.length <= 0) return;
+        if (search.length == 1 && searchLetter == '') {
+            setSearchLetter(search);
+        }
+        if (searchQuery == '') {
+            setSearchQuery(search);
+        }
+    }, [router.query.search]);
+
     function updateLetters(dataForLetters) {
         let letters = [];
         for (let element of dataForLetters) {
@@ -45,11 +61,13 @@ export default function ClientsPreview() {
         e.preventDefault();
         setSearchLetter('');
         setSearchQuery(e.target.searchText.value);
+        router.replace(`/clients?search=${e.target.searchText.value}`);
     }
 
     function searchClientsByLetter(letter) {
         setSearchLetter(letter);
         setSearchQuery(letter);
+        router.replace(`/clients?search=${letter}`);
     }
 
     function fulfillsSearch(client) {
