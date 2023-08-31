@@ -1,6 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
 import ReportsForm from "@/components/ReportsForm";
+import { convertFormISOToOur } from "@/helper/helper";
 import { useEffect, useState } from "react";
 
 export default function Reports() {
@@ -19,33 +21,50 @@ function MainArea() {
     const [enteriesToShow, setEnteriesToShow] = useState([]);
     const [total, setTotal] = useState(0);
     const [overtimeFlag, setOvertimeFlag] = useState(false);
+    const [excelUrl, setExcelUrl] = useState('');
 
     useEffect(() => {
         const newTotal = overtimeFlag ? enteriesToShow.map(entry => entry.overtime).reduce((partialSum, entry) => partialSum + entry, 0) : enteriesToShow.map(entry => entry.hours).reduce((partialSum, entry) => partialSum + entry, 0);
         setTotal(newTotal);
+        prepareExcel();
     }, [enteriesToShow, overtimeFlag])
 
     function printReport() {
         print();
     }
 
-    function createPDF() {
-        printReport();
+    function printDiv(elem) {
+        var divContents = document.getElementById(elem).innerHTML;
+        var a = window.open('', '', 'height=500, width=500');
+        a.document.write('<html>');
+        a.document.write('<body > <h1>Report</h1> <br/><br/>');
+        a.document.write(divContents);
+        a.document.write('</body></html>');
+        a.document.close();
+        a.print();
     }
 
-    function exportToExcel() {
-        let csvContent = "data:text/csv;charset=utf-8,";
+    function createPDF() {
+        printDiv('reportContent');
+    }
+
+    function prepareExcel() {
+        let csvContent = "";
+
+        const tableHead = `Date,Employees,Projects,Categories,Description,${overtimeFlag ? 'Overtime' : 'Hours'}`;
+        csvContent += tableHead + "\r\n";
 
         enteriesToShow.forEach(entry => {
             let row = '';
-            for (let fieldValue of entry) {
-                row += (fieldValue + ',')
+            for (let key in entry) {
+                row += `${entry[key]},`
             }
             csvContent += row + "\r\n";
         });
 
-        var encodedUri = encodeURI(csvContent);
-        window.open(encodedUri);
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8,' })
+        const objUrl = URL.createObjectURL(blob);
+        setExcelUrl(objUrl);
     }
 
     return (
@@ -54,8 +73,8 @@ function MainArea() {
                 <section className="content">
                     <div className="main-content">
                         <h2 className="main-content__title">Reports</h2>
-                        <ReportsForm enteriesToShow={enteriesToShow} setEnteriesToShow={setEnteriesToShow} setOvertimeFlag={setOvertimeFlag} />
-                        <div className="table-wrapper">
+                        <ReportsForm setEnteriesToShow={setEnteriesToShow} setOvertimeFlag={setOvertimeFlag} />
+                        <div id="reportContent" className="table-wrapper">
                             <table className="projects-table">
                                 <thead>
                                     <tr>
@@ -70,7 +89,7 @@ function MainArea() {
                                 <tbody>
                                     {enteriesToShow.map(entry => (
                                         <tr key={entry.id}>
-                                            <td>{entry.date}</td>
+                                            <td>{convertFormISOToOur(entry.date)}</td>
                                             <td>{entry.employeeName}</td>
                                             <td>{entry.projectName}</td>
                                             <td>{entry.categoryName}</td>
@@ -89,7 +108,7 @@ function MainArea() {
                         <div className="reports__buttons-bottom">
                             <button onClick={printReport} className="btn btn--transparent">Print Report</button>
                             <button onClick={createPDF} className="btn btn--transparent">Create PDF</button>
-                            <button onClick={exportToExcel} className="btn btn--transparent">Export to excel</button>
+                            <a href={excelUrl} className="btn btn--transparent" download="Report.csv">Export to excel</a>
                         </div>
                     </div>
                 </section>
