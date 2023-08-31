@@ -27,10 +27,12 @@ function parseJwt(token) {
         jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
+        return JSON.parse(jsonPayload);
     } catch (e) {
         logOut();
+        return {};
     }
-    return JSON.parse(jsonPayload);
+
 }
 
 export function logOut() {
@@ -82,4 +84,8 @@ export function datesEqual(firstDay, secondDay) {
 
 export function datesCompare(first, second) {
     return first > second ? 1 : first == second ? 0 : -1;
+}
+
+export function convertFormISOToOur(isoDate) {
+    return isoDate.split('.')[0].replace('T', ' ');
 }

@@ -4,6 +4,7 @@ using timesheetback.Repositories;
 using timesheetback.Models;
 using NuGet.Common;
 using Newtonsoft.Json.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace timesheetback.Services
 {
@@ -13,6 +14,9 @@ namespace timesheetback.Services
         private readonly ITimeEntryRepository _timeEntryRepository;
         private readonly IUserRepository _userRepository;
         private readonly IJwtService _jwtService;
+
+        private readonly double fullTimeWorkHours = 7.5;
+        private readonly double hoursInDay = 24.0;
 
         public TimeEntryService(ITimeEntryRepository timeEntryRepository, IUserRepository userRepository, IJwtService jwtService)
 		{
@@ -37,9 +41,18 @@ namespace timesheetback.Services
             double totalHours = userEnteriesForThisDay.Sum(entry => entry.Hours);
             double totalOvertime = userEnteriesForThisDay.Sum(entry => entry.Overtime ?? 0);
 
+            if (totalHours + newTimeEntry.Hours > fullTimeWorkHours)
+            {
+                throw new Exception($"Can't have more then {fullTimeWorkHours} reqular working hours. Everything after {fullTimeWorkHours} has to be overtime.");
+            }
+
+            if (totalHours + newTimeEntry.Hours < fullTimeWorkHours && totalOvertime + newTimeEntry.Overtime > 0) {
+                throw new Exception("First enter regular hours then overtime");
+            }
+
             double hoursWorkedThisDay = totalHours + totalOvertime;
-            if(hoursWorkedThisDay + newTimeEntry.Hours + newTimeEntry.Overtime > 24.0) {
-                throw new Exception("Can't work more then 24h in one day.");
+            if(hoursWorkedThisDay + newTimeEntry.Hours + newTimeEntry.Overtime > hoursInDay) {
+                throw new Exception($"Can't work more then {hoursInDay}h in one day.");
             }
             return new TimeEntryDTO(_timeEntryRepository.SaveEntry(user, new TimeEntry(newTimeEntry)));
         }
@@ -60,12 +73,52 @@ namespace timesheetback.Services
             double totalHours = userEnteriesForThisDay.Sum(entry => entry.Hours);
             double totalOvertime = userEnteriesForThisDay.Sum(entry => entry.Overtime ?? 0);
 
+            if (totalHours + newTimeEntry.Hours > fullTimeWorkHours)
+            {
+                throw new Exception($"Can't have more then {fullTimeWorkHours} reqular working hours. Everything after {fullTimeWorkHours} has to be overtime.");
+            }
+
+            if (totalHours + newTimeEntry.Hours < fullTimeWorkHours && totalOvertime + newTimeEntry.Overtime > 0)
+            {
+                throw new Exception("First enter regular hours then overtime");
+            }
+
             double hoursWorkedThisDay = totalHours + totalOvertime;
             if (hoursWorkedThisDay + newTimeEntry.Hours + newTimeEntry.Overtime > 24.0)
             {
                 throw new Exception("Can't work more then 24h in one day.");
             }
             return new TimeEntryDTO(_timeEntryRepository.SaveEntry(user, new TimeEntry(newTimeEntry)));
+        }
+
+        public List<TimeEntryDetailedDTO> GetReport(long client, long project, long category, long employee, string time, string token)
+        {
+            string userRole = _jwtService.GetClaimFromJWT(token, "role");
+            if(userRole != "admin") {
+                string userEmail = _jwtService.GetClaimFromJWT(token, "email");
+                Employee? user = _userRepository.GetUserByEmail(userEmail);
+                if(user == null || user.Id != employee) {
+                    throw new Exception("Can't request report for someone else if you are not admin.");
+                }
+            }
+
+            return _timeEntryRepository.GetTimeEntriesReport(client, project, category, employee, time);
+        }
+
+        public async Task<List<TimeEntryDetailedDTO>> GetReportAsync(long client, long project, long category, long employee, string time, string token)
+        {
+            string userRole = _jwtService.GetClaimFromJWT(token, "role");
+            if (userRole != "admin")
+            {
+                string userEmail = _jwtService.GetClaimFromJWT(token, "email");
+                Employee? user = await _userRepository.GetUserByEmailAsync(userEmail);
+                if (user == null || user.Id != employee)
+                {
+                    throw new Exception("Can't request report for someone else if you are not admin.");
+                }
+            }
+
+            return await _timeEntryRepository.GetTimeEntriesReportAsync(client, project, category, employee, time);
         }
 
         public List<TotalTimeDTO> GetTotalTimesForDateRange(string start, string end, string token)
