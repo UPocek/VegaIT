@@ -79,6 +79,21 @@ namespace timesheetback.Controllers
                 return NotFound(ex.Message);
             }
         }
+
+        [HttpGet("report")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<List<TimeEntryDetailedDTO>>> Report(long client, long project, long category, long employee, string time)
+        {
+            try
+            {
+                var token = await HttpContext.GetTokenAsync("access_token");
+                return await _timeEntryService.GetReportAsync(client, project, category, employee, time, token!);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
 

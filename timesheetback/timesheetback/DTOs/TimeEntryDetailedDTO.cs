@@ -1,7 +1,7 @@
 ﻿using System;
 namespace timesheetback.DTOs
 {
-	public class TimeEntryDTODetailed
+	public class TimeEntryDetailedDTO
 	{
         public long Id { get; set; }
         public string? Description { get; set; }
@@ -13,12 +13,12 @@ namespace timesheetback.DTOs
         public string ProjectName { get; set; }
         public string CategoryName { get; set; }
 
-        public TimeEntryDTODetailed()
+        public TimeEntryDetailedDTO()
 		{
 
 		}
 
-        public TimeEntryDTODetailed(long id, string? description, double hours, double? overtime, DateTime date, string employeeName, string clientName, string projectName, string categoryName)
+        public TimeEntryDetailedDTO(long id, string? description, double hours, double? overtime, DateTime date, string employeeName, string clientName, string projectName, string categoryName)
         {
             Id = id;
             Description = description;

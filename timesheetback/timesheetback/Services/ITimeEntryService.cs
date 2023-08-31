@@ -16,6 +16,9 @@ namespace timesheetback.Services
 
 		List<TimeEntryDTO> GetUserEntriesForDate(string date, string token);
 		Task<List<TimeEntryDTO>> GetUserEntriesForDateAsync(string date, string token);
+
+		List<TimeEntryDetailedDTO> GetReport(long client, long project, long category, long employee, string time, string token);
+		Task<List<TimeEntryDetailedDTO>> GetReportAsync(long client, long project, long category, long employee, string time, string token);
     }
 }
 

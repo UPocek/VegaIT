@@ -4,6 +4,7 @@ using timesheetback.Repositories;
 using timesheetback.Models;
 using NuGet.Common;
 using Newtonsoft.Json.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace timesheetback.Services
 {
@@ -88,6 +89,36 @@ namespace timesheetback.Services
                 throw new Exception("Can't work more then 24h in one day.");
             }
             return new TimeEntryDTO(_timeEntryRepository.SaveEntry(user, new TimeEntry(newTimeEntry)));
+        }
+
+        public List<TimeEntryDetailedDTO> GetReport(long client, long project, long category, long employee, string time, string token)
+        {
+            string userRole = _jwtService.GetClaimFromJWT(token, "role");
+            if(userRole != "admin") {
+                string userEmail = _jwtService.GetClaimFromJWT(token, "email");
+                Employee? user = _userRepository.GetUserByEmail(userEmail);
+                if(user == null || user.Id != employee) {
+                    throw new Exception("Can't request report for someone else if you are not admin.");
+                }
+            }
+
+            return _timeEntryRepository.GetTimeEntriesReport(client, project, category, employee, time);
+        }
+
+        public async Task<List<TimeEntryDetailedDTO>> GetReportAsync(long client, long project, long category, long employee, string time, string token)
+        {
+            string userRole = _jwtService.GetClaimFromJWT(token, "role");
+            if (userRole != "admin")
+            {
+                string userEmail = _jwtService.GetClaimFromJWT(token, "email");
+                Employee? user = await _userRepository.GetUserByEmailAsync(userEmail);
+                if (user == null || user.Id != employee)
+                {
+                    throw new Exception("Can't request report for someone else if you are not admin.");
+                }
+            }
+
+            return await _timeEntryRepository.GetTimeEntriesReportAsync(client, project, category, employee, time);
         }
 
         public List<TotalTimeDTO> GetTotalTimesForDateRange(string start, string end, string token)

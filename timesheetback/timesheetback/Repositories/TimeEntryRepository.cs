@@ -50,6 +50,172 @@ namespace timesheetback.Repositories
             return _context.TimeEntries.FirstOrDefaultAsync(entry => entry.Id == id);
         }
 
+        public List<TimeEntryDetailedDTO> GetTimeEntriesReport(long client, long project, long category, long employee, string time)
+        {
+            var query = _context.TimeEntries.AsQueryable();
+            if (client != -1)
+            {
+                query = query.Where(te => te.ClientId == client);
+            }
+
+            if (project != -1)
+            {
+                query = query.Where(te => te.ProjectId == project);
+            }
+
+            if (category != -1)
+            {
+                query = query.Where(te => te.CategoryId == category);
+            }
+
+            if (employee != -1)
+            {
+                query = query.Where(te => te.EmployeeId == employee);
+            }
+
+            if(time != "all") {
+
+                var today = DateTime.Today;
+
+                if (time == "this_week") {
+                    // Assuming Monday is the start of the week
+                    var startOfWeek = today.AddDays(-(int)today.DayOfWeek);
+                    var endOfWeek = startOfWeek.AddDays(6);
+                    query = query.Where(te => te.Date >= startOfWeek && te.Date <= endOfWeek);
+                }
+                else if (time == "last_week")
+                {
+                    var startOfWeek = today.AddDays(-(int)today.DayOfWeek -7);
+                    var endOfWeek = startOfWeek.AddDays(6);
+                    query = query.Where(te => te.Date >= startOfWeek && te.Date <= endOfWeek);
+                }
+                else if (time == "this_month")
+                {
+                    var startOfMonth = today.AddDays(-today.Day);
+                    var endOfWeek = startOfMonth.AddMonths(1);
+                    query = query.Where(te => te.Date >= startOfMonth && te.Date <= endOfWeek);
+                }
+                else if (time == "last_month")
+                {
+                    var startOfMonth = today.AddMonths(-1).AddDays(-today.Day);
+                    var endOfWeek = startOfMonth.AddMonths(1);
+                    query = query.Where(te => te.Date >= startOfMonth && te.Date <= endOfWeek);
+                }
+                else if (time.Contains('|')) {
+                    var borders = time.Split('|');
+                    if (borders[0] != "") {
+                        var start = DateTime.Parse(borders[0]);
+                        query = query.Where(te => te.Date >= start);
+                    }
+                    if (borders[1] != "")
+                    {
+                        var end = DateTime.Parse(borders[1]);
+                        query = query.Where(te => te.Date <= end);
+                    }
+                }
+            }
+
+            var timeEntries = query.Select(te => new TimeEntryDetailedDTO
+            {
+                Id = te.Id,
+                Description = te.Description,
+                Hours = te.Hours,
+                Overtime = te.Overtime,
+                Date = te.Date,
+                EmployeeName = (te.Employee != null ? te.Employee.Name : ""),
+                ClientName = (te.Client != null ? te.Client.Name : ""),
+                ProjectName = (te.Project != null ? te.Project.Name : ""),
+                CategoryName = (te.Category != null ? te.Category.Name : ""),
+            }).ToList();
+
+            return timeEntries;
+        }
+
+        public Task<List<TimeEntryDetailedDTO>> GetTimeEntriesReportAsync(long client, long project, long category, long employee, string time)
+        {
+            var query = _context.TimeEntries.AsQueryable();
+            if (client != -1)
+            {
+                query = query.Where(te => te.ClientId == client);
+            }
+
+            if (project != -1)
+            {
+                query = query.Where(te => te.ProjectId == project);
+            }
+
+            if (category != -1)
+            {
+                query = query.Where(te => te.CategoryId == category);
+            }
+
+            if (employee != -1)
+            {
+                query = query.Where(te => te.EmployeeId == employee);
+            }
+
+            if (time != "all")
+            {
+
+                var today = DateTime.Today;
+
+                if (time == "this_week")
+                {
+                    // Assuming Monday is the start of the week
+                    var startOfWeek = today.AddDays(-(int)today.DayOfWeek);
+                    var endOfWeek = startOfWeek.AddDays(6);
+                    query = query.Where(te => te.Date >= startOfWeek && te.Date <= endOfWeek);
+                }
+                else if (time == "last_week")
+                {
+                    var startOfWeek = today.AddDays(-(int)today.DayOfWeek - 7);
+                    var endOfWeek = startOfWeek.AddDays(6);
+                    query = query.Where(te => te.Date >= startOfWeek && te.Date <= endOfWeek);
+                }
+                else if (time == "this_month")
+                {
+                    var startOfMonth = today.AddDays(-today.Day);
+                    var endOfWeek = startOfMonth.AddMonths(1);
+                    query = query.Where(te => te.Date >= startOfMonth && te.Date <= endOfWeek);
+                }
+                else if (time == "last_month")
+                {
+                    var startOfMonth = today.AddMonths(-1).AddDays(-today.Day);
+                    var endOfWeek = startOfMonth.AddMonths(1);
+                    query = query.Where(te => te.Date >= startOfMonth && te.Date <= endOfWeek);
+                }
+                else if (time.Contains('|'))
+                {
+                    var borders = time.Split('|');
+                    if (borders[0] != "")
+                    {
+                        var start = DateTime.Parse(borders[0]);
+                        query = query.Where(te => te.Date >= start);
+                    }
+                    if (borders[1] != "")
+                    {
+                        var end = DateTime.Parse(borders[1]);
+                        query = query.Where(te => te.Date <= end);
+                    }
+                }
+            }
+
+            var timeEntries = query.Select(te => new TimeEntryDetailedDTO
+            {
+                Id = te.Id,
+                Description = te.Description,
+                Hours = te.Hours,
+                Overtime = te.Overtime,
+                Date = te.Date,
+                EmployeeName = (te.Employee != null ? te.Employee.Name : ""),
+                ClientName = (te.Client != null ? te.Client.Name : ""),
+                ProjectName = (te.Project != null ? te.Project.Name : ""),
+                CategoryName = (te.Category != null ? te.Category.Name : ""),
+            }).ToListAsync();
+
+            return timeEntries;
+        }
+
         public List<TotalTimeDTO> GetTotalTimeEntriesForDateRange(string userEmail, string startIsoDate, string endIsoDate)
         {
             if (!DateTime.TryParse(startIsoDate, out DateTime startDate) ||
