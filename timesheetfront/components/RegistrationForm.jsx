@@ -1,14 +1,13 @@
 import { baseUrl } from "@/pages/_app";
 import axios from "axios";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function RegistrationForm() {
     const minPasswordLength = 6;
-<<<<<<< Updated upstream
-=======
+
     const router = useRouter();
 
->>>>>>> Stashed changes
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [role, setRole] = useState('worker');
@@ -29,7 +28,7 @@ export default function RegistrationForm() {
                 'skip': 'true'
             }
         })
-            .then(response => { setBadRequest(false); setCredentialsNotValid(false); alert(`New employee added sucessfully ${response.data} !`) })
+            .then(_ => { setBadRequest(false); setCredentialsNotValid(false); alert(`New employee added sucessfully!`); router.replace('/'); })
             .catch(_ => { setCredentialsNotValid(false); setBadRequest(true) });
     }
 

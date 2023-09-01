@@ -22,8 +22,13 @@ namespace timesheetback.Repositories
 		void DeleteEmployee(long id);
 		Task DeleteEmployeeAsync(long id);
 
+		VerifyCode? GetVerificationCode(string code);
+		Task<VerifyCode?> GetVerificationCodeAsync(string code);
+
         Employee UpdateEmployee(Employee employeeToUpdate, RegistrationCredentialsDTO registrationCredentials);
         Employee SaveUser(Employee user);
+        Employee AssignNewPassword(Employee employee, string newPassword, VerifyCode? verifyCodeUsed);
+        VerifyCode SaveForgotPasswordCode(VerifyCode verifyCode);
     }
 }
 

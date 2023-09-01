@@ -49,7 +49,7 @@ export default function DaysPreview({ date, setDate, clients, projects, categori
     }
 
     return (
-        <div className="wrapper">
+        <div className="wrapper min100">
             <section className="content">
                 <div id="mainContent" className="main-content">
                     <h2 className="main-content__title">Timesheet</h2>

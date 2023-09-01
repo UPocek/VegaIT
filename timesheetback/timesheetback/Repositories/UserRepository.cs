@@ -15,6 +15,16 @@ namespace timesheetback.Repositories
 			_context = context;
 		}
 
+        public Employee AssignNewPassword(Employee employee, string newPassword, VerifyCode? verifyCodeUsed)
+        {
+            employee.Password = newPassword;
+            if(verifyCodeUsed != null) {
+                verifyCodeUsed.Verified = true;
+            }
+            _context.SaveChanges();
+            return employee;
+        }
+
         public void DeleteEmployee(long id)
         {
             var employeeToDelete = _context.Employees.Find(id) ?? throw new Exception("Employee with that id does not exist");
@@ -67,6 +77,23 @@ namespace timesheetback.Repositories
         public Task<Employee?> GetUserByEmailAsync(string email)
         {
             return _context.Employees.Include(e => e.Role).FirstOrDefaultAsync(employee => employee.Email == email);
+        }
+
+        public VerifyCode? GetVerificationCode(string code)
+        {
+            return _context.VerifyCodes.FirstOrDefault(vc => vc.Code == code && vc.Verified == false);
+        }
+
+        public Task<VerifyCode?> GetVerificationCodeAsync(string code)
+        {
+            return _context.VerifyCodes.FirstOrDefaultAsync(vc => vc.Code == code && vc.Verified == false);
+        }
+
+        public VerifyCode SaveForgotPasswordCode(VerifyCode verifyCode)
+        {
+            _context.VerifyCodes.Add(verifyCode);
+            _context.SaveChanges();
+            return verifyCode;
         }
 
         public Employee SaveUser(Employee user)

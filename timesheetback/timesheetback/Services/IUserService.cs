@@ -21,6 +21,15 @@ namespace timesheetback.Services
         UserDTO UpdateUser(long id, RegistrationCredentialsDTO registrationCredentials);
         Task<UserDTO> UpdateUserAsync(long id, RegistrationCredentialsDTO registrationCredentials);
 
+        void SendRecoveryEmail(ForgotPasswordDTO email);
+        Task SendRecoveryEmailAsync(ForgotPasswordDTO email);
+
+        void AssignNewPassword(NewPasswordDTO credentials);
+        Task AssignNewPasswordAsync(NewPasswordDTO credentials);
+
+        void ChangePassword(ChangePasswordDTO newPassword, string token);
+        Task ChangePasswordAsync(ChangePasswordDTO newPassword, string token);
+
         void DeleteUser(long id);
         Task DeleteUserAsync(long id);
     }

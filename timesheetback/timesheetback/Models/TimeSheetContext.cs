@@ -25,6 +25,7 @@ namespace timesheetback.Models
         public DbSet<Employee> Employees { get; set; } = null!;
         public DbSet<Project> Projects { get; set; } = null!;
         public DbSet<TimeEntry> TimeEntries { get; set; } = null!;
+        public DbSet<VerifyCode> VerifyCodes { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

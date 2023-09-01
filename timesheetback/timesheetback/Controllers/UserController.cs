@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.SqlServer.Server;
 using timesheetback.DTOs;
 using timesheetback.Models;
 using timesheetback.Repositories;
@@ -26,7 +29,6 @@ public class UserController : ControllerBase
         _jWTManager = jWTManager;
     }
 
-    // /api/user/login
     [AllowAnonymous]
     [HttpPost("login")]
     public IActionResult Login(LoginCredentialsDTO loginCredentials)
@@ -71,26 +73,69 @@ public class UserController : ControllerBase
     [HttpPut("{id}")]
     public async Task<ActionResult<UserDTO>> UpdateUser(long id, RegistrationCredentialsDTO registrationCredentials)
     {
-        try {
+        try
+        {
             return await _userService.UpdateUserAsync(id, registrationCredentials);
-        }catch(Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return BadRequest(ex.Message);
         }
         
+    }
+
+    [AllowAnonymous]
+    [HttpPut("forgotPassword")]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordDTO email)
+    {
+        await _userService.SendRecoveryEmailAsync(email);
+        return Ok("Reset password email sent");
+    }
+
+    [AllowAnonymous]
+    [HttpPut("newpassword")]
+    public async Task<IActionResult> AssignNewPassword(NewPasswordDTO credentials)
+    {
+        try
+        {
+            await _userService.AssignNewPasswordAsync(credentials);
+            return Ok("New password set.");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPut("changepassword")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    public async Task<IActionResult> ChangePassword(ChangePasswordDTO newPassword)
+    {
+        try
+        {
+            var token = await HttpContext.GetTokenAsync("access_token");
+            await _userService.ChangePasswordAsync(newPassword, token!);
+            return Ok("Password changed.");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUser(long id)
     {
-        try {
+        try
+        {
             await _userService.DeleteUserAsync(id);
-        }catch(Exception ex) {
+        }
+        catch (Exception ex)
+        {
             return BadRequest(ex.Message);
         }
 
         return Ok();
-        
     }
-
 }
 

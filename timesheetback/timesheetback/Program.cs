@@ -59,6 +59,7 @@ builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<ITimeEntryService, TimeEntryService>();
 builder.Services.AddScoped<ITimeEntryRepository, TimeEntryRepository>();
 
+builder.Services.AddScoped<IHelperService, HelperService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 
 
