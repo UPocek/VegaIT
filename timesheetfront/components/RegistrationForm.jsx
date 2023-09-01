@@ -28,7 +28,7 @@ export default function RegistrationForm() {
                 'skip': 'true'
             }
         })
-            .then(_ => { setBadRequest(false); setCredentialsNotValid(false); alert(`New employee added sucessfully!`); router.replace('/'); })
+            .then(_ => { setBadRequest(false); setCredentialsNotValid(false); localStorage.clear(); alert(`New employee added sucessfully!`); router.replace('/login'); })
             .catch(_ => { setCredentialsNotValid(false); setBadRequest(true) });
     }
 
