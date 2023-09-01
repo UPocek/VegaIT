@@ -54,9 +54,7 @@ export default function NavBar() {
                     <div className="user__nav">
                         <h2 className="user__name">{username}</h2>
                         <ul className="user__dropdown">
-                            <li className="user__list"><Link className="user__link" href="/">Change password</Link></li>
-                            <li className="user__list"><Link className="user__link" href="/">Settings</Link></li>
-                            <li className="user__list"><Link className="user__link" href="/">Export all data</Link></li>
+                            <li className="user__list"><Link className="user__link" href="/change-password">Change password</Link></li>
                         </ul>
                     </div>
                     <ul>

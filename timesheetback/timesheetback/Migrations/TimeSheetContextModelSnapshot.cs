@@ -26,6 +26,7 @@ namespace timesheetback.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -67,6 +68,26 @@ namespace timesheetback.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Cities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Name = "Novi Sad",
+                            Zip = "21000"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Name = "Chicago",
+                            Zip = "60007"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            Name = "Berlin",
+                            Zip = "10115"
+                        });
                 });
 
             modelBuilder.Entity("timesheetback.Models.Client", b =>
@@ -171,14 +192,14 @@ namespace timesheetback.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<long>("ClientId")
+                    b.Property<long?>("ClientId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<long>("EmployeeId")
+                    b.Property<long?>("EmployeeId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Name")
@@ -231,10 +252,10 @@ namespace timesheetback.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    b.Property<long>("CategoryId")
+                    b.Property<long?>("CategoryId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("ClientId")
+                    b.Property<long?>("ClientId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("Date")
@@ -243,7 +264,7 @@ namespace timesheetback.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
-                    b.Property<long>("EmployeeId")
+                    b.Property<long?>("EmployeeId")
                         .HasColumnType("bigint");
 
                     b.Property<double>("Hours")
@@ -252,7 +273,7 @@ namespace timesheetback.Migrations
                     b.Property<double?>("Overtime")
                         .HasColumnType("double");
 
-                    b.Property<long>("ProjectId")
+                    b.Property<long?>("ProjectId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -266,6 +287,28 @@ namespace timesheetback.Migrations
                     b.HasIndex("ProjectId");
 
                     b.ToTable("TimeEntries");
+                });
+
+            modelBuilder.Entity("timesheetback.Models.VerifyCode", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("Verified")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("VerifyCodes");
                 });
 
             modelBuilder.Entity("timesheetback.Models.Client", b =>
@@ -302,15 +345,11 @@ namespace timesheetback.Migrations
                 {
                     b.HasOne("timesheetback.Models.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClientId");
 
                     b.HasOne("timesheetback.Models.Employee", "Employee")
                         .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EmployeeId");
 
                     b.Navigation("Client");
 
@@ -321,27 +360,19 @@ namespace timesheetback.Migrations
                 {
                     b.HasOne("timesheetback.Models.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.HasOne("timesheetback.Models.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClientId");
 
                     b.HasOne("timesheetback.Models.Employee", "Employee")
                         .WithMany("TimeEntrys")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EmployeeId");
 
                     b.HasOne("timesheetback.Models.Project", "Project")
                         .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProjectId");
 
                     b.Navigation("Category");
 
