@@ -6,17 +6,8 @@ export default function Projects() {
     return (
         <>
             <NavBar />
-            <MainArea />
-            <Footer />
-        </>
-    );
-}
-
-// eslint-disable-next-line react/no-multi-comp
-function MainArea() {
-    return (
-        <>
             <ProjectsPreview />
+            <Footer />
         </>
     );
 }

@@ -8,5 +8,6 @@ export default function NewPassword() {
             <MinimalNav />
             <NewPasswordForm />
             <Footer />
-        </>)
+        </>
+    );
 }

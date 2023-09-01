@@ -6,17 +6,8 @@ export default function Clients() {
     return (
         <>
             <NavBar />
-            <MainArea />
-            <Footer />
-        </>
-    );
-}
-
-// eslint-disable-next-line react/no-multi-comp
-function MainArea() {
-    return (
-        <>
             <ClientsPreview />
+            <Footer />
         </>
     );
 }

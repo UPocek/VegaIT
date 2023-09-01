@@ -21,14 +21,14 @@ export default function EmployeesPreview() {
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
-        axios.get(`${baseUrl}/api/role/all`)
-            .then(response => {
-                setRoles(response.data);
-                axios.get(`${baseUrl}/api/user/all`)
-                    .then(response => setUsers(response.data))
-                    .catch(error => console.log(error));
-            })
-            .catch(error => console.log(error));
+        // eslint-disable-next-line no-undef
+        Promise.all([
+            axios.get(`${baseUrl}/api/role/all`),
+            axios.get(`${baseUrl}/api/user/all`)
+        ]).then(([roleResponse, userResponse]) => {
+            setRoles(roleResponse.data);
+            setUsers(userResponse.data);
+        });
     }, []);
 
     useEffect(() => {

@@ -5,7 +5,9 @@ import { useState } from "react";
 
 export default function RegistrationForm() {
     const minPasswordLength = 6;
+
     const router = useRouter();
+
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [role, setRole] = useState('worker');
@@ -26,7 +28,7 @@ export default function RegistrationForm() {
                 'skip': 'true'
             }
         })
-            .then(_ => { setBadRequest(false); setCredentialsNotValid(false); alert(`New employee added sucessfully!`); router.replace('/'); })
+            .then(_ => { setBadRequest(false); setCredentialsNotValid(false); localStorage.clear(); alert(`New employee added sucessfully!`); router.replace('/login'); })
             .catch(_ => { setCredentialsNotValid(false); setBadRequest(true) });
     }
 

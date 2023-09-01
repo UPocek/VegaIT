@@ -8,5 +8,6 @@ export default function Login() {
             <MinimalNav />
             <LoginForm />
             <Footer />
-        </>)
+        </>
+    );
 }

@@ -5,6 +5,7 @@ import axios from "axios";
 import { baseUrl } from "@/pages/_app";
 
 export default function ClientCard({ cities, countries, clientId, clientName, clientAddress, clientCity, clientCountry, clients, setClients }) {
+
     const [name, setName] = useState(clientName);
     const [address, setAddress] = useState(clientAddress);
     const [city, setCity] = useState(clientCity);

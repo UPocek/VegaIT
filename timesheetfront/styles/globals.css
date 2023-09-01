@@ -1223,6 +1223,10 @@ input[type=number] {
   display: none;
 }
 
+.min100 {
+  min-height: 88vh;
+}
+
 /* Header */
 @media (max-width:1069px) {
 

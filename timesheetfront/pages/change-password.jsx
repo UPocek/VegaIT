@@ -8,5 +8,6 @@ export default function ChangePassword() {
             <NavBar />
             <ChangePasswordForm />
             <Footer />
-        </>)
+        </>
+    );
 }

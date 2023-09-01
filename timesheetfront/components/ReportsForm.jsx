@@ -22,18 +22,18 @@ export default function ReportsForm({ setEnteriesToShow, setOvertimeFlag }) {
     const [endDate, setEndDate] = useState('');
 
     useEffect(() => {
-        axios.get(`${baseUrl}/api/client/all-minimal`)
-            .then(response => setClients(response.data))
-            .catch(error => console.log(error));
-        axios.get(`${baseUrl}/api/project/all-minimal`)
-            .then(response => setProjects(response.data))
-            .catch(error => console.log(error));
-        axios.get(`${baseUrl}/api/category/all`)
-            .then(response => setCategories(response.data))
-            .catch(error => console.log(error));
-        axios.get(`${baseUrl}/api/user/all-minimal`)
-            .then(response => setEmployees(response.data))
-            .catch(error => console.log(error));
+        // eslint-disable-next-line no-undef
+        Promise.all([
+            axios.get(`${baseUrl}/api/client/all-minimal`),
+            axios.get(`${baseUrl}/api/project/all-minimal`),
+            axios.get(`${baseUrl}/api/category/all`),
+            axios.get(`${baseUrl}/api/user/all-minimal`)
+        ]).then(([clientResponse, projectResponse, categoryResponse, userResponse]) => {
+            setClients(clientResponse.data);
+            setProjects(projectResponse.data);
+            setCategories(categoryResponse.data);
+            setEmployees(userResponse.data);
+        }).catch(error => console.log(error));
     }, []);
 
     useEffect(() => {
