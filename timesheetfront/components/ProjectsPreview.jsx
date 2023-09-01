@@ -15,22 +15,23 @@ export default function ProjectsPreview() {
 
     const [showModal, setShowModal] = useState(false);
     const [searchLetter, setSearchLetter] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
     const [employees, setEmployees] = useState([]);
     const [clients, setClients] = useState([]);
     const [projects, setProjects] = useState([]);
     const [firstLetters, setFirstLetters] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
-        axios.get(`${baseUrl}/api/client/all-minimal`)
-            .then(response => setClients(response.data))
-            .catch(error => console.log(error));
-        axios.get(`${baseUrl}/api/user/all-minimal`)
-            .then(response => setEmployees(response.data))
-            .catch(error => console.log(error));
-        axios.get(`${baseUrl}/api/project/all`)
-            .then(response => setProjects(response.data))
-            .catch(error => console.log(error));
+        // eslint-disable-next-line no-undef
+        Promise.all([
+            axios.get(`${baseUrl}/api/client/all-minimal`),
+            axios.get(`${baseUrl}/api/user/all-minimal`),
+            axios.get(`${baseUrl}/api/project/all`)
+        ]).then(([clientResponse, userResponse, projectResponse]) => {
+            setClients(clientResponse.data);
+            setEmployees(userResponse.data);
+            setProjects(projectResponse.data);
+        }).catch(error => console.log(error));
     }, []);
 
     useEffect(() => {

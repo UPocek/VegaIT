@@ -15,21 +15,24 @@ export default function ClientsPreview() {
 
     const [showModal, setShowModal] = useState(false);
     const [searchLetter, setSearchLetter] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
+
     const [cities, setCities] = useState([]);
     const [countries, setCountries] = useState([]);
     const [clients, setClients] = useState([]);
     const [firstLetters, setFirstLetters] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
-        axios.get(`${baseUrl}/api/client/cities`)
-            .then(response => setCities(response.data))
-            .catch(error => console.log(error));
-        axios.get(`${baseUrl}/api/client/countries`)
-            .then(response => setCountries(response.data))
-            .catch(error => console.log(error));
-        axios.get(`${baseUrl}/api/client/all`)
-            .then(response => setClients(response.data))
+        // eslint-disable-next-line no-undef
+        Promise.all([
+            axios.get(`${baseUrl}/api/client/cities`),
+            axios.get(`${baseUrl}/api/client/countries`),
+            axios.get(`${baseUrl}/api/client/all`)])
+            .then(([citiesResponse, countriesResponse, clientsResponse]) => {
+                setCities(citiesResponse.data);
+                setCountries(countriesResponse.data);
+                setClients(clientsResponse.data);
+            })
             .catch(error => console.log(error));
     }, []);
 

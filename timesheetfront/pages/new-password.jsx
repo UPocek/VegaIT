@@ -1,12 +1,12 @@
 import Footer from "@/components/Footer";
-import LoginForm from "@/components/LoginForm";
 import MinimalNav from "@/components/MinimalNav";
+import NewPasswordForm from "@/components/NewPasswordForm";
 
-export default function Login() {
+export default function NewPassword() {
     return (
         <>
             <MinimalNav />
-            <LoginForm />
+            <NewPasswordForm />
             <Footer />
         </>
     );

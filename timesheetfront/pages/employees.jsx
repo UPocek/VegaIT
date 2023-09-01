@@ -8,14 +8,8 @@ export default function Employees() {
     return (
         <>
             <NavBar />
-            <MainArea />
+            <EmployeesPreview />
             <Footer />
         </>
-    );
-}
-
-function MainArea() {
-    return (
-        <EmployeesPreview />
     );
 }

@@ -1,15 +1,17 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { useState } from "react";
+import { memo, useCallback, useState } from "react";
 import axios from "axios";
 import { baseUrl } from "@/pages/_app";
 
-export default function CategoriesCard({ categoryId, categoryName, categories, setCategories }) {
-    const [name, setName] = useState(categoryName);
+const CategoriesCard = memo(function CategoriesCard({ categoryId, categoryName, categories, setCategories }) {
 
+    const [name, setName] = useState(categoryName);
     const [showAccordion, setShowAccordion] = useState(false);
 
-    function updateCategory(e) {
+    const credentialsValid = useCallback(() => name.length > 1 && (name != categoryName), [name, categoryName]);
+
+    const updateCategory = useCallback((e) => {
         e.preventDefault();
         if (!credentialsValid(e)) {
             alert("Invalid new data");
@@ -23,13 +25,9 @@ export default function CategoriesCard({ categoryId, categoryName, categories, s
                 alert("Category updated successfully");
             })
             .catch(error => console.log(error));
-    }
+    }, [credentialsValid, categoryId, name, categories, setCategories]);
 
-    function credentialsValid() {
-        return name.length > 1 && (name != categoryName)
-    }
-
-    function deleteCategory() {
+    const deleteCategory = useCallback(() => {
         axios.delete(`${baseUrl}/api/category/${categoryId}`)
             .then(_ => {
                 const remainingCategories = categories.filter(p => p.id != categoryId);
@@ -37,7 +35,7 @@ export default function CategoriesCard({ categoryId, categoryName, categories, s
                 alert("Category deleted successfully");
             })
             .catch(error => console.log(error));
-    }
+    }, [categories, categoryId, setCategories]);
 
     return (
         <div className="accordion">
@@ -62,4 +60,6 @@ export default function CategoriesCard({ categoryId, categoryName, categories, s
             </form>
         </div>
     );
-}
+});
+
+export default CategoriesCard;

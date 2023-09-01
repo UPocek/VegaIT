@@ -1,12 +1,12 @@
-import ProjectsPreview from "@/components/ProjectsPreview";
+import ChangePasswordForm from "@/components/ChangePasswordForm";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/NavBar";
 
-export default function Projects() {
+export default function ChangePassword() {
     return (
         <>
             <NavBar />
-            <ProjectsPreview />
+            <ChangePasswordForm />
             <Footer />
         </>
     );

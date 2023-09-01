@@ -3,9 +3,9 @@ import axios from "axios";
 import { useState } from "react";
 
 export default function CategoriesModal({ setShowModal, categories, setCategories }) {
-    const [credentialsNotValid, setCredentialsNotValid] = useState(false);
 
     const [name, setName] = useState('');
+    const [credentialsNotValid, setCredentialsNotValid] = useState(false);
 
     function createNewCategory(e) {
         e.preventDefault();
@@ -26,7 +26,7 @@ export default function CategoriesModal({ setShowModal, categories, setCategorie
     }
 
     function credentialsValid() {
-        return name;
+        return name != null;
     }
 
     function resetForm() {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import DaysNavigation from "./DaysNavigation";
 import WeekDaysTable from "./WeekDaysTable";
 import DaysTable from "./DaysTable";
@@ -8,18 +8,17 @@ import { baseUrl } from "@/pages/_app";
 
 export default function DaysPreview({ date, setDate, clients, projects, categories }) {
 
-    const [wholeWeek, setWholeWeek] = useState([]);
-    const [total, setTotal] = useState(0);
     const [dateEnteries, setDateEnteries] = useState([]);
+    const wholeWeek = useMemo(() => calculateWeek(date), [date]);
+    const total = useMemo(() => calculateTotal(dateEnteries), [dateEnteries]);
 
     useEffect(() => {
-        calculateWeek(date);
         getAllTimeEntries(date);
     }, [date]);
 
-    useEffect(() => {
-        setTotal(dateEnteries.map(entry => entry.hours + (entry.overtime || 0)).reduce((partialSum, entry) => partialSum + entry, 0));
-    }, [dateEnteries])
+    function calculateTotal(currentEnteries) {
+        return currentEnteries.map(entry => entry.hours + (entry.overtime || 0)).reduce((partialSum, entry) => partialSum + entry, 0)
+    }
 
     function calculateWeek(dateToCalculate) {
         let newWeek = [new Date(dateToCalculate)];
@@ -37,8 +36,7 @@ export default function DaysPreview({ date, setDate, clients, projects, categori
             newWeek.push(new Date(dateSelected));
             startDay = dateSelected.getDay();
         }
-
-        setWholeWeek(newWeek);
+        return newWeek;
     }
 
     function getAllTimeEntries(dateToGet) {

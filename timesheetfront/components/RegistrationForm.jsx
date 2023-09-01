@@ -4,6 +4,11 @@ import { useState } from "react";
 
 export default function RegistrationForm() {
     const minPasswordLength = 6;
+<<<<<<< Updated upstream
+=======
+    const router = useRouter();
+
+>>>>>>> Stashed changes
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [role, setRole] = useState('worker');

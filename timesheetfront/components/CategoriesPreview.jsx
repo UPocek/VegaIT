@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { baseUrl } from "@/pages/_app";
 import ElementsSearch from "./ElementsSearch";
@@ -20,8 +20,9 @@ export default function CategoriesPreview() {
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
-        axios.get(`${baseUrl}/api/category/all`)
-            .then(response => setCategories(response.data))
+        // eslint-disable-next-line no-undef
+        Promise.all([axios.get(`${baseUrl}/api/category/all`)])
+            .then(([allCategories]) => setCategories(allCategories.data))
             .catch(error => console.log(error));
     }, []);
 
@@ -56,16 +57,16 @@ export default function CategoriesPreview() {
         router.replace(`/categories?search=${e.target.searchText.value}`);
     }
 
-    function searchCategoriesByLetter(letter) {
-        setSearchLetter(letter);
-        setSearchQuery(letter);
-        router.replace(`/categories?search=${letter}`);
-    }
-
     function fulfillsSearch(client) {
         if (searchQuery == '') return true;
         return client.name.toLowerCase().startsWith(searchQuery.toLowerCase());
     }
+
+    const searchCategoriesByLetter = useCallback((letter) => {
+        setSearchLetter(letter);
+        setSearchQuery(letter);
+        router.replace(`/categories?search=${letter}`);
+    }, []);
 
     return (
         <>

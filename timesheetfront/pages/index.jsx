@@ -6,8 +6,7 @@ import NavBar from '@/components/NavBar'
 import { useState } from 'react'
 import TableNavigation from '@/components/TableNavigation'
 import TableData from '@/components/TableData'
-// import axios from 'axios';
-// import { baseUrl } from './_app';
+import Footer from '@/components/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,21 +22,21 @@ export default function Home() {
       <main className={`${styles.main} ${inter.className}`}>
         <NavBar />
         <MainArea />
+        <Footer />
       </main>
     </>
   )
 }
 
 function MainArea() {
-  const [today, setToday] = useState(new Date());
   const [dateToShow, setDateToShow] = useState(new Date());
 
   return (
-    <div className="wrapper">
+    <div className="wrapper min100">
       <section className="main-content">
         <h2 className="main-content__title">Timesheet</h2>
         <TableNavigation dateToShow={dateToShow} setDateToShow={setDateToShow} />
-        <TableData today={today} dateToShow={dateToShow} />
+        <TableData today={new Date()} dateToShow={dateToShow} />
       </section>
     </div>
   );

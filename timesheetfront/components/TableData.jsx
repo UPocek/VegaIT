@@ -13,7 +13,7 @@ export default function TableData({ today, dateToShow }) {
 
     useEffect(() => {
         populateCells(dateToShow);
-    }, [dateToShow])
+    }, [dateToShow]);
 
     function populateCells(currentDate) {
         let startDate = '';
@@ -99,7 +99,4 @@ export default function TableData({ today, dateToShow }) {
             <TableTotal total={total} />
         </>
     );
-
-
-
 }
