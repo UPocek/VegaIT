@@ -13,7 +13,7 @@ The technology requirement for this part was C# .NET API with the ability to sus
 ### Front-end 
 
 ![Front](https://github.com/UPocek/VegaIT/blob/main/docs/login.png)
-![Front](https://github.com/UPocek/VegaIT/blob/main/docs/swager.png)
+![Front](https://github.com/UPocek/VegaIT/blob/main/docs/main.png)
 ![Front](https://github.com/UPocek/VegaIT/blob/main/docs/categories.png)
 ![Front](https://github.com/UPocek/VegaIT/blob/main/docs/reports.png)
 
@@ -25,3 +25,7 @@ The front was coded in the React javascript library with the framework NextJS fo
 ![Docker](https://github.com/UPocek/VegaIT/blob/main/docs/eer.png)
 
 Docker in this project was used for setting up the MySQL database to persist data. The setup was straightforward with just a couple of docker commands Port forwarding was set up and everything was working as expected. The next task was to create a connection between .Net and this MySQL database for which I used Pomelo wrapper around EntityFramework which worked perfectly for my use case. I decided to go code first and because of that I created classes based on my diagrams, after the connection string was set up, migrations created first tables started popping up in my MySQL database. I learned a lot about Docker with this basic setup and I hope to continue working with it in the future.
+
+## Summary
+
+
