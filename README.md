@@ -28,4 +28,4 @@ Docker in this project was used for setting up the MySQL database to persist dat
 
 ## Summary
 
-
+Working on this project was an interesting experience, because I was familiar with the technologies required and I worked on similar projects in the past I tried to incorporate some new things and features just to test myself and to push myself to learn new things. If you have any questions about my code please reach out to me I will be glad to help.
